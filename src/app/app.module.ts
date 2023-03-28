@@ -8,6 +8,7 @@ import { UserComponent } from './Components/user/user.component';
 import { UsersComponent } from './Components/users/users.component';
 import { UserComponent as FirstUser } from './First/user/user.component';
 import { UsersComponent as FirstUsers } from './First/users/users.component';
+import { AddUserComponent } from './Components/add-user/add-user.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { UsersComponent as FirstUsers } from './First/users/users.component';
     FirstUsers,
     UserComponent,
     UsersComponent,
+    AddUserComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

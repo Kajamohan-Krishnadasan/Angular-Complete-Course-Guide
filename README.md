@@ -322,3 +322,43 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
   ```
 
 ## Send data from child to parent component
+
+- from child element
+
+  - in `add-user.component.ts` file
+
+  ```\
+  <button class="btn btn-primary" (click)="addNewUsers()">Add User</button>
+  ```
+
+  - in `add-user.component.ts` file
+
+  ```\
+
+  firstName: string = '';
+  lastName: string = '';
+
+  userName: string = '';
+
+  @Input() isInputValid!: boolean;
+
+  /* 
+  * add custom event
+  * here the userModel is a interface
+  * userModel {
+     firstName: string;
+     lastName: string;
+    }
+  * here we are sending the userAdded event to the parent component
+  */
+  @Output() userAdded = new EventEmitter<userModel>();
+
+  addNewUsers() {
+    this.userAdded.emit({
+      firstName: this.firstName,
+      lastName: this.lastName,
+    });
+  }
+  ```
+  
+- in the parent element

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { userModel } from 'src/app/model/user.type';
 
 @Component({
   selector: 'app-users',
@@ -6,21 +7,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent {
-  firstName: string = '';
-  lastName: string = '';
-  userName: string = '';
-
-  firstNameList: string[] = [];
   usersList: string[] = [];
+  userName: string = '';
 
   isInputValid: boolean = false;
 
-  addNewUsers() {
-    if (this.firstName !== '' && this.lastName !== '') {
-      this.userName = this.firstName + ' ' + this.lastName;
+  addNewUsers(event: userModel) {
+    let firstName = event.firstName;
+    let lastName = event.lastName;
+
+    if (firstName !== '' && lastName !== '') {
+      this.userName = firstName + ' ' + lastName;
 
       this.usersList.push(this.userName);
-      this.firstNameList.push(this.firstName);
 
       this.isInputValid = false;
     } else {
@@ -31,16 +30,13 @@ export class UsersComponent {
   }
 
   clear() {
-    this.firstName = '';
-    this.lastName = '';
     this.userName = '';
   }
 
   checkUserList() {
     if (this.usersList.length === 0) {
       return false;
-    }
-    else{
+    } else {
       return true;
     }
   }
