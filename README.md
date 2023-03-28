@@ -113,3 +113,145 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
   - in `app.component.html` file
   - `<div class="app-component-name"></div>`
+
+## Binding
+
+- data binding is
+  how to send data from component to html is called data binding
+
+  - in `app.component.ts` file
+  - `user: string = 'Kajamohan';`
+
+  - in `app.component.html` file
+  - `<h1>Hi, I'm {{user}}</h1>`
+
+### String interpolation
+
+- we need to use double curly braces
+- **string interpolation**: {{allowNewUser}}
+- in `app.component.ts` file
+  `allowNewUser: boolean = false;`
+
+- in `app.component.html` file
+  `<div>{{allowNewUser}}</div>`
+
+- in `app.component.html` file
+  `<div [innerText]="allowNewUser"></div>`
+
+### Property binding
+
+- we need to use square brackets
+- **property binding**: [property]="data"
+
+  - in `app.component.ts` file
+  - `allowNewUser: boolean = false;`
+
+  - in `app.component.html` file
+  - `<button [disabled]="allowNewUser">Add User</button>`
+
+### Event binding
+
+- we need to use round brackets
+- **event binding**: (event)="function()"
+
+### sent data from html to component
+
+- from the input field we need to get the data then we need to add event binding
+- in `app.component.html` file
+
+```\
+<input type="text" (input)="onUserInput($event)">
+<div> {{useName}} </div>
+```
+
+- here $event is sent event object to the function
+
+- in `app.component.ts` file
+
+  ```\
+  useName: string = '';
+
+    // get the user name from the input
+   onUpdateUser(event: Event) {
+     // method 1
+     this.useName = (event.target as HTMLInputElement).value;
+
+     // method 2
+     this.useName = (<HTMLInputElement>event.target).value;
+   }
+  ```
+
+### Two way binding
+
+- we need to use square brackets and round brackets
+- this is used for form elements
+- **two way binding**: [(ngModel)]="data"
+
+- in `app.component.html` file
+
+```\
+ <input type="text" [(ngModel)]="useName">
+ <div> {{useName}} </div>
+```
+
+## Directives
+
+### ngIf
+
+- conditionally add or remove an element from the DOM
+- this is a structural directive
+- if the condition is true, the element will be rendered here when the user click the Add User Button isUserCreated change to true and blow div will render
+
+- in `app.component.html` file
+
+#### method 1
+
+```\
+// if is true this will render
+ <div *ngIf="isUserCreated">
+  {{ userCreatedStatus }} and the username is {{ userName }}
+</div>
+
+// if is false this will render
+<div *ngIf="!isUserCreated">
+  {{ userCreatedStatus }}
+</div>
+
+```
+
+#### method 2
+
+```\
+<div *ngIf="isUserCreated; else noUser">
+{{ userCreatedStatus }} and the
+  username is {{ userName }}
+</div>
+
+<ng-template #noUser>
+  <div>{{ userCreatedStatus }}</div>
+</ng-template>
+```
+
+## [ngStyle]
+
+- in `app.component.html` file
+
+```\
+<div class="my-2" [ngStyle]="{ 'background-color': getColor() }">
+  {{ "User" }} with ID {{ userId }} is {{ getUserStatus() }}
+</div>
+```
+
+- in 'app.component.ts' file
+
+```\
+  getColor() {
+    if (this.userStatus === 'online') {
+      return 'green';
+    }else{
+      return 'red';
+    }
+  }
+```
+
+

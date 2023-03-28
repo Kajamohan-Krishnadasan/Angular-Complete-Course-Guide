@@ -1,4 +1,58 @@
 <h3>Users Component</h3>
+
+<!--
+  // Property binding
+
+  <div [innerText]="allowNewUser"></div>
+-->
+<!--
+  // String Interpolation
+
+  <div> {{ allowNewUser }} </div>
+-->
+<div class="my-2">
+  <label for="">User Name</label>
+
+  <input type="text" class="form-control m-1" (input)="onUpdateUser($event)" />
+  <br />
+  <input type="text" class="form-control m-1" [(ngModel)]="userName" />
+
+  <div>{{ userName }}</div>
+</div>
+
+<button
+  (click)="changeUserCreatedStatus()"
+  class="btn btn-primary"
+  [disabled]="!allowNewUser"
+>
+  Add User
+</button>
+
+<!-- method 1 using *ngIf -->
+<!-- if is true this will render -->
+<div *ngIf="isUserCreated">
+  method 1 :
+  {{ userCreatedStatus }} and the username is {{ userName }}
+</div>
+
+<!-- if is false this will render -->
+<div *ngIf="!isUserCreated">
+  method 1 :
+  {{ userCreatedStatus }}
+</div>
+
+<!-- method 2 using *ngIf -->
+<div *ngIf="isUserCreated; else noUser">
+  method 2 (using <b>ng-template</b> ) : {{ userCreatedStatus }} and the
+  username is {{ userName }}
+</div>
+
+<ng-template #noUser>
+  <div>method 2 (using <b>ng-template</b> ) : {{ userCreatedStatus }}</div>
+</ng-template>
+
+<hr />
+<!-- Child Components -->
 <app-user></app-user>
 <app-user></app-user>
 <app-user></app-user>
