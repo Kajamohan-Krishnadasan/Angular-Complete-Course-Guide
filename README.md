@@ -232,17 +232,21 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 </ng-template>
 ```
 
-## [ngStyle]
+### [ngStyle] and [ngClass]
 
-- in `app.component.html` file
+- in `./First/user.component.html` file
 
 ```\
-<div class="my-2" [ngStyle]="{ 'background-color': getColor() }">
+<div
+  class="my-2"
+  [ngClass]="{ offline: getUserStatus() == 'offline' }"
+  [ngStyle]="{ backgroundColor: getColor() }"
+>
   {{ "User" }} with ID {{ userId }} is {{ getUserStatus() }}
 </div>
 ```
 
-- in 'app.component.ts' file
+- in `./First/user.component.ts` file
 
 ```\
   getColor() {
@@ -254,4 +258,67 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
   }
 ```
 
+- in `./First/user.component.css` file
 
+```\
+.offline {
+  color: rgb(255, 255, 255);
+}
+```
+
+### ngFor
+
+- in `./First/users.component.html` file
+
+```\
+<div *ngFor="let user of users">
+  User Name : {{ user }}
+</div>
+```
+
+- in `./First/users.component.ts` file
+
+```\
+ // add new user to the users array
+    if (this.userName != '' && this.userName != null) {
+      this.users.push(this.userName);
+    } else {
+      alert('Enter a valid user name');
+    }
+```
+
+## Send data from parent to child component
+
+- from parent element
+
+  - in `users.component.ts` file
+
+  ```\
+  usersList: string[] = [];
+  ```
+
+  - in `users.component.html` file
+
+  ```\
+  <app-user *ngFor="let user of usersList" [usernameFromParent] = 'user'></app-user>
+  ```
+
+  - in `user.component.ts` file
+
+  ```\
+  @Input() usernameFromParent: string;
+
+  // or other way
+  @Input('usernameFromParent') username: string;
+  ```
+
+  - in `user.component.html` file
+
+  ```\
+  <p>Username : {{usernameFromParent}} </p>
+
+  // or other way
+  <p>Username : {{username}} </p>
+  ```
+
+## Send data from child to parent component

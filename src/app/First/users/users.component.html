@@ -52,7 +52,13 @@
 </ng-template>
 
 <hr />
+
+<!-- using ngFor to dispaly -->
+<div *ngFor="let user of users">
+  User Name : {{ user }}
+</div>
+
+<hr />
+
 <!-- Child Components -->
-<app-user></app-user>
-<app-user></app-user>
-<app-user></app-user>
+<app-first-user></app-first-user>

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 // create class as a component we need a decorator
 @Component({
-  selector: 'app-user',
+  selector: 'app-first-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
 })
