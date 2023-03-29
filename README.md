@@ -196,7 +196,23 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Directives
 
-### ngIf
+- they are 2 types
+  - structural directives
+  - attribute directives
+
+### structural directives
+
+- they are used to change the structure of the DOM
+  - \*ngIf
+  - \*ngFor
+
+### attribute directives
+
+- they are used to change the appearance of the DOM
+  - [ngStyle]
+  - [ngClass]
+
+> ### ngIf
 
 - conditionally add or remove an element from the DOM
 - this is a structural directive
@@ -232,7 +248,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 </ng-template>
 ```
 
-### [ngStyle] and [ngClass]
+> ### [ngStyle] and [ngClass]
 
 - in `./First/user.component.html` file
 
@@ -585,3 +601,120 @@ using `ng-content` we can display the content in the parent component.
 
 - in the above code we are accessing the `userSpan` which is used in the parent component
 - we can access the text content of the `userSpan` using `this.userSpan.nativeElement.textContent`
+
+## advanced in the directive
+
+- built in directive
+
+  - ngIf
+  - ngFor
+  - ngSwitch
+  - ngClass
+  - ngStyle
+  - ngModel
+
+- custom directive
+  - attribute directive
+  - structural directive
+
+### attribute directive
+
+- in `./users.component.html` file
+
+```\
+  // build in directive
+  <div [ngStyle]="{ 'background-color': 'red' }">
+    Please add the background color red
+  </div>
+
+  /*
+  * custom directive as tag
+  * this appHighlightText1 is a custom directive
+  * from the HighlightText1.directive.ts file
+  */
+  <appHighlightText1>Please add the background color yellow</appHighlightText1>
+
+  /*
+  * custom directive as attribute
+  * this appHighlightText2 is a custom directive
+  * from the HighlightText2.directive.ts file
+  */
+  <div appHighlightText2>Please add the background color purple</div>
+
+  /*
+  * use the render property in the javascript
+  * this appRenderHighlight2 is a custom directive
+  * from the RenderHighlight2.directive.ts file
+  */
+  <div appRenderHighlight>Please add the background color green</div>
+
+```
+
+- in `./highlightText1.directive.ts` file
+
+```\
+  @Directive({
+    selector: 'appHighlightText1',
+  })
+  export class HighlightText1Directive {
+    constructor(private el: ElementRef) {
+      el.nativeElement.style.backgroundColor = 'yellow';
+    }
+  }
+```
+
+- in `./highlightText2.directive.ts` file
+
+```\
+  @Directive({
+    selector: '[appHighlightText2]',
+  })
+  export class HighlightText2Directive {
+    constructor(private el: ElementRef) {
+      el.nativeElement.style.backgroundColor = 'purple';
+    }
+  }
+```
+
+- in `./renderHighlight2.directive.ts` file
+
+```\
+  @Directive({
+    selector: '[appRenderHighlight]',
+  })
+  export class RenderHighlight2Directive implements OnInit {
+    // here we are using the render property in the javascript
+    constructor(private el: ElementRef, private render: Renderer2) {}
+
+    ngOnInit() {
+      this.render.setStyle(this.el.nativeElement, 'background-color', 'green');
+    }
+  }
+```
+
+#### @HostListener : this is used to listen the event in the directive
+
+- @HostListener('mouseenter') mouseEnter() {} // this is used to listen the mouse enter event
+- @HostListener('mouseleave') mouseLeave() {} // this is used to listen the mouse leave event
+- @HostListener('click') mouseClick() {} // this is used to listen the mouse click event
+- @HostListener('window:scroll') windowScroll() {} // this is used to listen the window scroll event
+
+#### @HostBinding : this is used to bind the property in the directive
+
+- in `./renderHighlight.directive.ts` file
+
+```\
+  @HostBinding('style.fontSize') fontSize!: string;
+
+   @HostListener('mouseover') onmouseover(event: Event) {
+    this.fontSize = '20px';
+  }
+
+  @HostListener('mouseleave') onmouseleave(event: Event) {
+    this.fontSize = '16px';
+  }
+
+  @HostListener('click') onclick(event: Event) {
+    this.fontSize = '30px';
+  }
+```

@@ -9,6 +9,9 @@ import { UsersComponent } from './Components/users/users.component';
 import { UserComponent as FirstUser } from './First/user/user.component';
 import { UsersComponent as FirstUsers } from './First/users/users.component';
 import { AddUserComponent } from './Components/add-user/add-user.component';
+import { HighlightTextDirective1 } from './Directives/HighlightText1.directive';
+import { HighlightTextDirective2 } from './Directives/HighlightText2.directive';
+import { RenderHighlightDirective } from './Directives/render-highlight.directive';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,9 @@ import { AddUserComponent } from './Components/add-user/add-user.component';
     UserComponent,
     UsersComponent,
     AddUserComponent,
+    HighlightTextDirective1,
+    HighlightTextDirective2,
+    RenderHighlightDirective,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

@@ -22,3 +22,23 @@
     <span #userSpan>(from users component) Username : {{ user }} </span>
   </app-user>
 </div>
+
+<div class="mt-3">
+  <!-- build in directive -->
+  <p [ngStyle]="{ 'background-color': 'red' }">
+    Please add the background color red
+  </p>
+
+  <!-- custom directive as tag -->
+  <p>
+    <appHighlightText1
+      >Please add the background color yellow</appHighlightText1
+    >
+  </p>
+
+  <!-- custom directive as attribute -->
+  <p appHighlightText2>Please add the background color purple</p>
+
+  <!-- use the render property in the javascript -->
+  <p appRenderHighlight>Please add the background color green</p>
+</div>
