@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { userModel } from 'src/app/model/user.type';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
+  // encapsulation: ViewEncapsulation.None,
 })
 export class UsersComponent {
-  usersList: string[] = [];
-  userName: string = '';
+  usersList: string[] = ['Niroshan'];
+  name: string = 'Kajamohan';
+
+  userName: string = this.name;
 
   isInputValid: boolean = false;
 
@@ -39,5 +42,13 @@ export class UsersComponent {
     } else {
       return true;
     }
+  }
+
+  changeName() {
+    this.name = 'Arshath';
+  }
+
+  deletecomponent() {
+    this.usersList = [];
   }
 }

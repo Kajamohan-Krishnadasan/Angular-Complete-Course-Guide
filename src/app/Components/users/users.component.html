@@ -3,11 +3,22 @@
   [isInputValid]="isInputValid"
 ></app-add-user>
 
-<div class="mt-3" *ngIf="checkUserList()">
+<div class="mt-3">
   <h3>Users List</h3>
+
+  <div>
+    <button class="btn btn-primary" (click)="changeName()">Change Name</button>
+    <button class="btn btn-danger mx-3" (click)="deletecomponent()">
+      Delete component
+    </button>
+  </div>
 
   <app-user
     *ngFor="let user of usersList"
     [usernameFromParent]="user"
-  ></app-user>
+    [name]="name"
+  >
+    <!-- This will display only if we use the <ng-content> tag. -->
+    <span #userSpan>(from users component) Username : {{ user }} </span>
+  </app-user>
 </div>

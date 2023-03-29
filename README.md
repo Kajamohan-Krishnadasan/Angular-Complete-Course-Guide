@@ -342,7 +342,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
   @Input() isInputValid!: boolean;
 
-  /* 
+  /*
   * add custom event
   * here the userModel is a interface
   * userModel {
@@ -360,5 +360,228 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
     });
   }
   ```
-  
+
 - in the parent element
+
+  - in `users.component.html` file
+
+  ```\
+  <app-add-user
+  (userAdded)="addNewUsers($event)"
+  [isInputValid]="isInputValid"
+  ></app-add-user>
+  ```
+
+  - in `users.component.ts` file
+
+  ```\
+  addNewUsers(event: userModel) {
+    let firstName = event.firstName;
+    let lastName = event.lastName;
+
+    if (firstName !== '' && lastName !== '') {
+      this.userName = firstName + ' ' + lastName;
+
+      this.usersList.push(this.userName);
+
+      this.isInputValid = false;
+    } else {
+      this.isInputValid = true;
+    }
+
+    this.clear();
+  }
+  ```
+
+## apply style to the child component
+
+- in `users.component.ts` file
+- using **encapsulation**
+
+```\
+  // in side the @Component() decorator
+  encapsulation: ViewEncapsulation.None,
+
+```
+
+- view encapsulation is used to apply style to the child component
+- there are three types of view encapsulation
+  - **None**: this is used to apply style to the child component
+  - **Emulated**: this is a default value
+  - **ShadowDom**: this is used to use the native shadow dom
+
+## Local reference
+
+- in html file
+
+```\
+  <input type="text" #myInput>
+  <button (click)="onAddUser(myInput)">Add User</button>
+```
+
+here `#myInput` is a local reference
+access the value of the input element using `myInput.value`
+
+- in ts file
+
+```\
+  onAddUser(input: HTMLInputElement) {
+    console.log(input.value);
+  }
+```
+
+## ViewChild
+
+- in html file
+
+```\
+  <input type="text" #myInput>
+  <button (click)="onAddUser()">Add User</button>
+```
+
+- in ts file
+
+```\
+  @ViewChild('myInput') myInput!: ElementRef;
+
+  onAddUser() {
+    console.log(this.myInput.nativeElement.value);
+  }
+```
+
+- here `@ViewChild('myInput') myInput!: ElementRef;` is a decorator
+- `myInput` is a local reference
+
+## ng-content
+
+- in `./users.component.html` file
+
+```\
+<app-add-user>
+  <div class="alert alert-danger" role="alert">
+    Please enter a valid user name
+  </div>
+</app-add-user>
+```
+
+above in side `div` not display in the ouput. therefore we use `ng-content` to display the content.
+
+- in `./add-user.component.html` file
+
+```\
+<div>
+  <ng-content></ng-content>
+</div>
+```
+
+using `ng-content` we can display the content in the parent component.
+
+- this is mostly use to to sent html content to the child component
+
+## component life cycle
+
+- order of the life cycle
+
+  - ngOnChanges
+  - ngOnInit
+  - ngDoCheck
+  - ngAfterContentInit
+  - ngAfterContentChecked
+  - ngAfterViewInit
+  - ngAfterViewChecked
+  - ngOnDestroy
+
+- in `*.component.ts` file
+
+```\
+  // this is called when the input property is changed
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
+
+  // this is called when the component is created/ initialized
+  ngOnInit(): void {
+    console.log('ngOnInit');
+  }
+
+  // this is always called when the component is updated/ changed
+  ngDoCheck(): void {
+    console.log('ngDoCheck');
+  }
+
+  // this is called when the component use ng-content first time
+  ngAfterContentInit(): void {
+    console.log('ngAfterContentInit');
+  }
+
+  // this is called when the component use ng-content and changes
+  ngAfterContentChecked(): void {
+    console.log('ngAfterContentChecked');
+  }
+
+  // this is called when the component template is loaded
+  ngAfterViewInit(): void {
+    console.log('ngAfterViewInit');
+  }
+
+  // this is called when the component template is loaded and changes
+  ngAfterViewChecked(): void {
+    console.log('ngAfterViewChecked');
+  }
+
+  // this is called when the component is destroyed
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy');
+  }
+
+```
+
+## view child and content child
+
+- view child is used to access the child component
+- in `./add-user.component.html` file
+
+```\
+ <label class="m-2">
+    Email :
+    <input type="email" class="form-control" #userMail />
+  </label>
+
+  <button class="btn btn-primary mx-3" (click)="addUserMail(userMail)">
+    Add Email
+  </button>
+```
+
+- in `./add-user.component.ts` file
+
+```\
+  @ViewChild('userMail') userMail!: ElementRef;
+
+  addUserMail(val: HTMLInputElement) {
+    this.email = val.value;
+  }
+```
+
+- content child is used to access the child component which is used in the parent component
+- in `./users.component.html` file
+
+```\
+<app-user
+    *ngFor="let user of usersList"
+  >
+    <span #userSpan> Username : {{ user }} </span>
+  </app-user>
+```
+
+- in `./user.component.ts` file
+
+```\
+  @ContentChild('userSpan') userSpan!: ElementRef;
+
+  ngAfterContentInit() {
+    console.log(this.userSpan.nativeElement.textContent);
+  }
+```
+
+- in the above code we are accessing the `userSpan` which is used in the parent component
+- we can access the text content of the `userSpan` using `this.userSpan.nativeElement.textContent`
