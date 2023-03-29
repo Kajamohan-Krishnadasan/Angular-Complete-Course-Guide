@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { LogService } from './Services/log.service';
+import { UserService } from './Services/user.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  providers: [UserService, LogService],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Angular-Complete-Course-Guide';
   name = 'Kajamohan';
+  users: { name: string; status: string }[] = [];
+
+  constructor(private userService: UserService) {}
+  ngOnInit() {
+    this.users = this.userService.users;
+  }
 }

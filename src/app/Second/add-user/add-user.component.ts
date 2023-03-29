@@ -9,7 +9,7 @@ import {
 import { userModel } from 'src/app/model/user.type';
 
 @Component({
-  selector: 'app-add-user',
+  selector: 'app-second-add-user',
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.scss'],
 })
@@ -33,6 +33,8 @@ export class AddUserComponent {
       firstName: this.firstName,
       lastName: this.lastName,
     });
+
+    console.log('User is added '+ this.firstName + ' ' + this.lastName);
   }
 
   addUserMail(val: HTMLInputElement) {

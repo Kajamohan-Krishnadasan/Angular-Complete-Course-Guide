@@ -194,7 +194,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
  <div> {{useName}} </div>
 ```
 
-## Directives
+## Directives Basics
 
 - they are 2 types
   - structural directives
@@ -830,4 +830,130 @@ using `ng-content` we can display the content in the parent component.
   </div>
 ```
 
-> [!NOTE]kajamohan
+## Heriarchical Injection of the angular
+
+- **app.module.ts**
+
+  - this is highest level
+  - same instance will be used in all the components
+  - same instance will be used in all the services
+
+- **app.component.ts**
+
+  - this is the second level
+  - same instance will be used in all the components
+  - different instance will be used in all the services
+
+- **child.component.ts**
+  - this is the third level
+  - different instance will be used in all the components
+  - different instance will be used in all the services
+
+## Services
+
+- services are class
+- this contains the methods and properties
+
+### create the service
+
+- in `./logging.service.ts` file
+
+```\
+  export class LoggingService {
+    logStatusChange(status: string) {
+      console.log('A server status changed, new status: ' + status);
+    }
+  }
+```
+
+- in `./app.module.ts` file
+
+```\
+  providers: [LoggingService],
+```
+
+- or in `./users.component.ts` file
+
+```\
+  providers: [LoggingService],
+```
+
+### inject the service
+
+- in `./users.component.ts` file
+
+```\
+  constructor(private loggingService: LoggingService) {}
+
+ changeName() {
+    this.name = 'Arshath';
+    // console.log(this.name);
+
+    /*
+    * use the services
+    * this is not a good practice
+     let loggingService = new LoggingService();
+     loggingService.logToConsole('User name is changed to ' + this.name);
+    */
+   this.loggingService.logToConsole('User name is changed to ' + this.name);
+  }
+
+```
+
+### get the data from the service
+
+- in `./user.service.ts` file
+
+```\
+  users = [
+    {
+      name: 'Kaja',
+      status: 'Active',
+    },
+    {
+      name: 'Niroshan',
+      status: 'Inactive',
+    },
+    {
+      name: 'Arshath',
+      status: 'Active',
+    },
+  ];
+```
+
+- in `/app.component.ts` file
+
+```\
+  users: { name: string; status: string }[] = [];
+
+  constructor(private userService: UserService) {}
+  ngOnInit() {
+    this.users = this.userService.users;
+  }
+```
+
+### inject the service in the service
+
+- we need to add the service in the `./app.component.ts` file
+
+```\
+  providers: [LogService, UserService],
+```
+
+- in `./user.service.ts` file
+- we need to add the service in the constructor
+- we need to add **@Injectable()** in the class
+
+```\
+@Injectable()
+export class UserService {
+  constructor(private logService: LogService) {}
+
+  addUser(name: string, status: string) {
+    this.users.push({ name, status });
+    this.logService.logToConsole('User added');
+  }
+
+  // other methods
+}
+```

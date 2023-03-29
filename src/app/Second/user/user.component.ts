@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-user',
+  selector: 'app-second-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
 })
@@ -19,10 +19,10 @@ export class UserComponent {
 
   @ContentChild('userSpan') userSpan!: ElementRef;
 
-  constructor() {
-    console.log('UserComponent constructor Called');
-  }
-  
+  // constructor() {
+  //   console.log('UserComponent constructor Called');
+  // }
+
   /*
   ngOnChanges(element: SimpleChanges): void {
     console.log(element);
