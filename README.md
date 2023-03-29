@@ -212,7 +212,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
   - [ngStyle]
   - [ngClass]
 
-> ### ngIf
+> ### ngIf basic
 
 - conditionally add or remove an element from the DOM
 - this is a structural directive
@@ -718,3 +718,116 @@ using `ng-content` we can display the content in the parent component.
     this.fontSize = '30px';
   }
 ```
+
+#### pass the value to the directive
+
+- in `./users.component.html` file
+
+```\
+  <div appRenderHighlight [appRenderHighlightColor]="'red'">
+    Please add the background color red
+  </div>
+```
+
+- in `./renderHighlight.directive.ts` file
+
+```\
+  @Input('appRenderHighlightColor') color!: string;
+
+  ngOnInit() {
+    this.render.setStyle(this.el.nativeElement, 'background-color', this.color);
+  }
+```
+
+### structural directive
+
+- ngIf
+- ngFor
+- ngSwitch
+
+#### ngIf advanced
+
+```\
+  <div *ngIf="show; else elseBlock">
+    <h1> This is the if block </h1>
+  </div>
+
+  <ng-template #elseBlock>
+    <h1> This is the else block </h1>
+  </ng-template>
+```
+
+- using [ngIf]
+
+```\
+  <ng-template [ngIf]="isAvailable">
+    <div>show the div when is isAvailable is true (using [ngIf])</div>
+  </ng-template>
+```
+
+#### create the custom structural directive
+
+- in `./users.component.html` file
+
+```\
+  <div *appCustomStructuralDirective>
+    <h1> This is the custom structural directive </h1>
+  </div>
+```
+
+- in `./customStructuralDirective.directive.ts` file
+- method 1
+
+```\
+  @Directive({
+    selector: '[appCustomStructuralDirective]',
+  })
+  export class CustomStructuralDirectiveDirective {
+     @Input() appCustomStructuralDirective!: boolean;
+
+  constructor(
+    private templateRef: TemplateRef<any>,
+    private viewContainerRef: ViewContainerRef
+  ) {}
+    ngOnChanges() {
+    if (this.appCustomStructuralDirective) {
+      this.viewContainerRef.createEmbeddedView(this.templateRef);
+    } else {
+      this.viewContainerRef.clear();
+    }
+  }
+  }
+```
+
+- method 2
+
+```\
+  @Directive({
+    selector: '[appCustomStructuralDirective]',
+  })
+  export class CustomStructuralDirectiveDirective {
+
+    constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef) {}
+
+    @Input() set appCustomStructuralDirective(condition: boolean) {
+      if (condition) {
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      } else {
+        this.viewContainer.clear();
+      }
+    }
+  }
+```
+
+#### ngSwitch
+
+```\
+// ouput will change based on the value
+  <div [ngSwitch]="value">
+    <div *ngSwitchCase="10">Value is 10</div>
+    <div *ngSwitchCase="15">Value is 15</div>
+    <div *ngSwitchDefault>Value is Default</div>
+  </div>
+```
+
+> [!NOTE]kajamohan

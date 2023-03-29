@@ -12,6 +12,7 @@ import { AddUserComponent } from './Components/add-user/add-user.component';
 import { HighlightTextDirective1 } from './Directives/HighlightText1.directive';
 import { HighlightTextDirective2 } from './Directives/HighlightText2.directive';
 import { RenderHighlightDirective } from './Directives/render-highlight.directive';
+import { AlternateIfDirective } from './Directives/AlternateIf.directive';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { RenderHighlightDirective } from './Directives/render-highlight.directiv
     HighlightTextDirective1,
     HighlightTextDirective2,
     RenderHighlightDirective,
+    AlternateIfDirective,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

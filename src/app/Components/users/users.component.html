@@ -1,44 +1,95 @@
-<app-add-user
-  (userAdded)="addNewUsers($event)"
-  [isInputValid]="isInputValid"
-></app-add-user>
+<!-- <app-add-user
+    (userAdded)="addNewUsers($event)"
+    [isInputValid]="isInputValid"
+  ></app-add-user> -->
 
 <div class="mt-3">
   <h3>Users List</h3>
 
-  <div>
-    <button class="btn btn-primary" (click)="changeName()">Change Name</button>
-    <button class="btn btn-danger mx-3" (click)="deletecomponent()">
-      Delete component
-    </button>
+  <!-- <div>
+      <button class="btn btn-primary" (click)="changeName()">
+        Change Name
+      </button>
+      <button class="btn btn-danger mx-3" (click)="deletecomponent()">
+        Delete component
+      </button>
+    </div> -->
+
+  <!-- <app-user
+      *ngFor="let user of usersList"
+      [usernameFromParent]="user"
+      [name]="name"
+    >
+      // This will display only if we use the <ng-content> tag.
+      <span #userSpan>(from users component) Username : {{ user }} </span>
+    </app-user>
+  </div> -->
+
+  <div class="mt-3">
+    <!-- build in directive -->
+    <p [ngStyle]="{ 'background-color': 'red' }">
+      Please add the background color red
+    </p>
+
+    <!-- custom directive as tag -->
+    <p>
+      <appHighlightText1
+        >Please add the background color yellow</appHighlightText1
+      >
+    </p>
+
+    <!-- custom directive as attribute -->
+    <p appHighlightText2>Please add the background color purple</p>
+
+    <!-- use the render property in the javascript -->
+    <p appRenderHighlight>Please add the background color green</p>
+
+    <!-- pass the color to the directive -->
+    <p appRenderHighlight [defaultColor]="'red'" [highlightColor]="'blue'">
+      Please add the background color black
+    </p>
   </div>
 
-  <app-user
-    *ngFor="let user of usersList"
-    [usernameFromParent]="user"
-    [name]="name"
-  >
-    <!-- This will display only if we use the <ng-content> tag. -->
-    <span #userSpan>(from users component) Username : {{ user }} </span>
-  </app-user>
+  <hr />
+
+  <div>
+    <button class="btn btn-warning" (click)="isAvailable = !isAvailable">
+      Toggle Button
+    </button>
+  </div>
+  <div *ngIf="isAvailable">
+    show the div when is isAvailable is true (using *ngIf)
+  </div>
+
+  <ng-template [ngIf]="isAvailable">
+    <div>show the div when is isAvailable is true (using [ngIf])</div>
+  </ng-template>
+
+  <!-- custom if directive -->
+  <div *appAlternateIf="isAvailable">
+    show the div when is isAvailable is true (using custom directive)
+  </div>
 </div>
 
-<div class="mt-3">
-  <!-- build in directive -->
-  <p [ngStyle]="{ 'background-color': 'red' }">
-    Please add the background color red
-  </p>
+<!-- ngSwitch directive -->
+<button class="btn btn-info m-3" (click)="value = 10">
+  Change Value to 10
+</button>
+<button class="btn btn-info m-3" (click)="value = 15">
+  Change Value to 15
+</button>
+<button class="btn btn-info m-3" (click)="value = 50">
+  Change Value to 50
+</button>
 
-  <!-- custom directive as tag -->
-  <p>
-    <appHighlightText1
-      >Please add the background color yellow</appHighlightText1
-    >
-  </p>
-
-  <!-- custom directive as attribute -->
-  <p appHighlightText2>Please add the background color purple</p>
-
-  <!-- use the render property in the javascript -->
-  <p appRenderHighlight>Please add the background color green</p>
+<div [ngSwitch]="value">
+  <div *ngSwitchCase="10">
+    This will visible only if the <b> Value is 10 </b>
+  </div>
+  <div *ngSwitchCase="15">
+    This will visible only if the <b> Value is 15</b>
+  </div>
+  <div *ngSwitchDefault>
+    This will visible only if the <b> Value is Default</b>
+  </div>
 </div>

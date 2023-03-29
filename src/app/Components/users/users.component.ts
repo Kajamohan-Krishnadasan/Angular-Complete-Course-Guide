@@ -10,6 +10,9 @@ import { userModel } from 'src/app/model/user.type';
 export class UsersComponent {
   usersList: string[] = ['Niroshan'];
   name: string = 'Kajamohan';
+  isAvailable: boolean = true;
+
+  value: number = 10;
 
   userName: string = this.name;
 
