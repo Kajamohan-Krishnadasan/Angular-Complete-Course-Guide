@@ -2,36 +2,40 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UserComponent as SecondUser } from './Second/user/user.component';
-import { UsersComponent as SecondUsers } from './Second/users/users.component';
-import { UserComponent as FirstUser } from './First/user/user.component';
-import { UsersComponent as FirstUsers } from './First/users/users.component';
-import { AddUserComponent as SecondAddUsers } from './Second/add-user/add-user.component';
-import { HighlightTextDirective1 } from './Directives/HighlightText1.directive';
-import { HighlightTextDirective2 } from './Directives/HighlightText2.directive';
-import { RenderHighlightDirective } from './Directives/render-highlight.directive';
-import { AlternateIfDirective } from './Directives/AlternateIf.directive';
+import { HomeComponent } from './home/home.component';
+import { UsersComponent } from './users/users.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './user/user.component';
-import { AddUserComponent } from './add-user/add-user.component';
 
+const allRoutesOfApp: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
+  },
+  {
+    path: 'categories',
+    component: CategoriesComponent,
+  },
+  {
+    path: 'users/:id/:name',
+    component: UserComponent,
+  },
+];
 @NgModule({
   declarations: [
     AppComponent,
-    FirstUser,
-    FirstUsers,
-    SecondUser,
-    SecondUsers,
-    SecondAddUsers,
-    HighlightTextDirective1,
-    HighlightTextDirective2,
-    RenderHighlightDirective,
-    AlternateIfDirective,
+    HomeComponent,
+    UsersComponent,
+    CategoriesComponent,
     UserComponent,
-    AddUserComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  imports: [BrowserModule, FormsModule, RouterModule.forRoot(allRoutesOfApp)],
   providers: [],
   bootstrap: [AppComponent],
 })

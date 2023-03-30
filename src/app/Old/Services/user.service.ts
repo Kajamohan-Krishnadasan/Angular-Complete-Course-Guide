@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { LogService } from './log.service';
 
 @Injectable()
@@ -20,6 +20,10 @@ export class UserService {
     },
   ];
 
+  // here we are creating an event emitter
+  // this will be used to emit the data to the parent component
+  statusUpdated = new EventEmitter<string>();
+
   addUser(name: string, status: string) {
     this.users.push({ name, status });
     this.logService.logStatus(status + ' added');
@@ -27,6 +31,9 @@ export class UserService {
 
   updateUserStatus(id: number, status: string) {
     this.users[id].status = status;
+
+    // here we are emiting the data to the parent component
+    this.statusUpdated.emit(status);
     this.logService.logStatus(status + ' updated');
   }
 }

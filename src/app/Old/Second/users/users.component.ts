@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { userModel } from 'src/app/model/user.type';
-import { LoggingService } from 'src/app/Services/logging.service';
+import { userModel } from 'src/app/Old/model/user.type';
+import { LoggingService } from 'src/app/Old/Services/logging.service';
 
 @Component({
   selector: 'app-second-users',

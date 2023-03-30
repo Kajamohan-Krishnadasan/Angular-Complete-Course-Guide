@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { LogService } from './Old/Services/log.service';
-import { UserService } from './Old/Services/user.service';
+import { LogService } from './Services/log.service';
+import { UserService } from './Services/user.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-old-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
   providers: [UserService, LogService],
 })
 export class AppComponent implements OnInit {

@@ -6,7 +6,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { userModel } from 'src/app/model/user.type';
+import { userModel } from 'src/app/Old/model/user.type';
 
 @Component({
   selector: 'app-second-add-user',
@@ -34,7 +34,7 @@ export class AddUserComponent {
       lastName: this.lastName,
     });
 
-    console.log('User is added '+ this.firstName + ' ' + this.lastName);
+    console.log('User is added ' + this.firstName + ' ' + this.lastName);
   }
 
   addUserMail(val: HTMLInputElement) {

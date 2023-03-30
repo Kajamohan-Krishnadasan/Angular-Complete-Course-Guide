@@ -122,7 +122,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
   - in `app.component.ts` file
   - `user: string = 'Kajamohan';`
 
-  - in `app.component.html` file
+  - in `app-first.component.html` file
   - `<h1>Hi, I'm {{user}}</h1>`
 
 ### String interpolation
@@ -212,7 +212,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
   - [ngStyle]
   - [ngClass]
 
-> ### ngIf basic
+### ngIf basic
 
 - conditionally add or remove an element from the DOM
 - this is a structural directive
@@ -248,7 +248,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 </ng-template>
 ```
 
-> ### [ngStyle] and [ngClass]
+### [ngStyle] and [ngClass]
 
 - in `./First/user.component.html` file
 
@@ -307,19 +307,19 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 - from parent element
 
-  - in `users.component.ts` file
+  - in `./Second/users.component.ts` file
 
   ```\
   usersList: string[] = [];
   ```
 
-  - in `users.component.html` file
+  - in `./Second/users.component.html` file
 
   ```\
   <app-user *ngFor="let user of usersList" [usernameFromParent] = 'user'></app-user>
   ```
 
-  - in `user.component.ts` file
+  - in `./Second/user.component.ts` file
 
   ```\
   @Input() usernameFromParent: string;
@@ -328,7 +328,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
   @Input('usernameFromParent') username: string;
   ```
 
-  - in `user.component.html` file
+  - in `./Second/user.component.html` file
 
   ```\
   <p>Username : {{usernameFromParent}} </p>
@@ -341,13 +341,13 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 - from child element
 
-  - in `add-user.component.ts` file
+  - in `./Second/add-user.component.ts` file
 
   ```\
   <button class="btn btn-primary" (click)="addNewUsers()">Add User</button>
   ```
 
-  - in `add-user.component.ts` file
+  - in `./Second/add-user.component.ts` file
 
   ```\
 
@@ -379,7 +379,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 - in the parent element
 
-  - in `users.component.html` file
+  - in `./Second/users.component.html` file
 
   ```\
   <app-add-user
@@ -388,7 +388,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
   ></app-add-user>
   ```
 
-  - in `users.component.ts` file
+  - in `./Second/users.component.ts` file
 
   ```\
   addNewUsers(event: userModel) {
@@ -411,7 +411,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## apply style to the child component
 
-- in `users.component.ts` file
+- in `./Second/users.component.ts` file
 - using **encapsulation**
 
 ```\
@@ -470,7 +470,7 @@ access the value of the input element using `myInput.value`
 
 ## ng-content
 
-- in `./users.component.html` file
+- in `./Second/users.component.html` file
 
 ```\
 <app-add-user>
@@ -482,7 +482,7 @@ access the value of the input element using `myInput.value`
 
 above in side `div` not display in the ouput. therefore we use `ng-content` to display the content.
 
-- in `./add-user.component.html` file
+- in `./Second/add-user.component.html` file
 
 ```\
 <div>
@@ -555,7 +555,7 @@ using `ng-content` we can display the content in the parent component.
 ## view child and content child
 
 - view child is used to access the child component
-- in `./add-user.component.html` file
+- in `./Second/add-user.component.html` file
 
 ```\
  <label class="m-2">
@@ -568,7 +568,7 @@ using `ng-content` we can display the content in the parent component.
   </button>
 ```
 
-- in `./add-user.component.ts` file
+- in `./Second/add-user.component.ts` file
 
 ```\
   @ViewChild('userMail') userMail!: ElementRef;
@@ -579,7 +579,7 @@ using `ng-content` we can display the content in the parent component.
 ```
 
 - content child is used to access the child component which is used in the parent component
-- in `./users.component.html` file
+- in `./Second/users.component.html` file
 
 ```\
 <app-user
@@ -589,7 +589,7 @@ using `ng-content` we can display the content in the parent component.
   </app-user>
 ```
 
-- in `./user.component.ts` file
+- in `./Second/user.component.ts` file
 
 ```\
   @ContentChild('userSpan') userSpan!: ElementRef;
@@ -619,7 +619,7 @@ using `ng-content` we can display the content in the parent component.
 
 ### attribute directive
 
-- in `./users.component.html` file
+- in `./Second/users.component.html` file
 
 ```\
   // build in directive
@@ -721,7 +721,7 @@ using `ng-content` we can display the content in the parent component.
 
 #### pass the value to the directive
 
-- in `./users.component.html` file
+- in `./Second/users.component.html` file
 
 ```\
   <div appRenderHighlight [appRenderHighlightColor]="'red'">
@@ -767,7 +767,7 @@ using `ng-content` we can display the content in the parent component.
 
 #### create the custom structural directive
 
-- in `./users.component.html` file
+- in `./Second/users.component.html` file
 
 ```\
   <div *appCustomStructuralDirective>
@@ -866,13 +866,13 @@ using `ng-content` we can display the content in the parent component.
   }
 ```
 
-- in `./app.module.ts` file
+- in `./app.component.ts` file
 
 ```\
   providers: [LoggingService],
 ```
 
-- or in `./users.component.ts` file
+- or in `./Third/users.component.ts` file
 
 ```\
   providers: [LoggingService],
@@ -880,7 +880,7 @@ using `ng-content` we can display the content in the parent component.
 
 ### inject the service
 
-- in `./users.component.ts` file
+- in `./Third/users.component.ts` file
 
 ```\
   constructor(private loggingService: LoggingService) {}
@@ -902,7 +902,7 @@ using `ng-content` we can display the content in the parent component.
 
 ### get the data from the service
 
-- in `./user.service.ts` file
+- in `./Third/user.service.ts` file
 
 ```\
   users = [
@@ -956,4 +956,214 @@ export class UserService {
 
   // other methods
 }
+```
+
+### component communication using services
+
+- in `./user.service.ts` file
+- here we are creating an event emitter and emitting the data to the parent component
+
+```\
+  // here we are creating an event emitter
+  // this will be used to emit the data to another component
+  statusUpdated = new EventEmitter<string>();
+
+  updateUserStatus(id: number, status: string) {
+    this.users[id].status = status;
+
+    // here we are emiting the data to another component
+    this.statusUpdated.emit(status);
+    this.logService.logStatus(status + ' updated');
+  }
+```
+
+- in `./Third/add-user.component.ts` file
+- here we are subscribing to the event emitter and getting the data from the parent component
+
+```\
+  constructor(private userService: UserService) {}
+
+   ngOnInit() {
+    this.userService.statusUpdated.subscribe((data) => {
+      alert(data);
+      console.log(data);
+    });
+  }
+```
+
+## Routing
+
+- this is used to navigate between the components, pages and, urls
+- we have the following components
+
+  - home.component
+  - users.component
+  - categories.component
+
+### define route and using routerLink
+
+- we need to add the following in the `./app.module.ts` file
+
+1. add the routes
+
+   ```\
+   const allRoutesOfApp: Routes = [
+     { path: '', component: HomeComponent },
+     { path: 'users', component: UsersComponent },
+     { path: 'categories', component: CategoriesComponent },
+   ];
+   ```
+
+2. import the router module
+
+   - **RouterModule.forRoot(allRoutesOfApp)**
+
+   ```\
+     imports: [BrowserModule, FormsModule, RouterModule.forRoot(allRoutesOfApp)],
+   ```
+
+   - **forRoot** is used to define the routes
+
+3. add the router outlet in the `./app.component.html` file
+
+   ```\
+     <router-outlet></router-outlet>
+   ```
+
+4. add the router links in the `./app.component.html` file
+
+   ```\
+     <a routerLink="/">Home</a>
+     <a routerLink="/users">Users</a>
+
+     // here we are using property binding
+     <a [routerLink]="['/categories']">Categories</a>
+   ```
+
+   - **routerLink** is used to define the path
+   - if we use **href** it will reload the page therefore, here we are using **routerLink**
+
+- if we need to pass the data to the component we can use the following
+
+  ```\
+    <a [routerLink]="['/categories', 1]">Categories</a>
+  ```
+
+  - here we are passing the id as 1
+
+- if we need to pass the data to the component using the object we can use the following
+
+  ```\
+    <a [routerLink]="['/categories', {id: 1}]">Categories</a>
+  ```
+
+  - here we are passing the id as 1
+
+- if we need to navigate to **/users/admin/setting**
+
+  ```\
+    <a [routerLink]="['/users', 'admin', 'setting']">Users</a>
+  ```
+
+#### using routerLinkActive
+
+this is used to add the class to the active link
+
+```\
+  <a routerLink="/" routerLinkActive="active">Home</a>
+  <a routerLink="/users" routerLinkActive="active">Users</a>
+  <a [routerLink]="['/categories']" routerLinkActive="active">Categories</a>
+```
+
+here we are adding the class **active** to the active link
+all time home link will be active therefore, we need to add the following in the `./app.component.html` file
+**[routerLinkActiveOptions]="{exact: true}"**
+
+```\
+  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+```
+
+### using .ts file to navagate to the component
+
+- in `users.component.html` file
+
+```\
+  <button (click)="onNavigateToCategories()">Go to Categories</button>
+```
+
+- in `users.component.ts` file
+
+```\
+  constructor(private router: Router) {}
+
+    // navigate to page
+   onNavigateToCategories() {
+    // method 1
+     this.router.navigateByUrl('/categories');
+
+    // method 2
+    this.router.navigate(['/categories']);
+  }
+```
+
+### get the data from the url
+
+- in `app.module.ts` file
+
+```\
+ {
+    path: 'users/:id/:name',
+    component: UserComponent,
+  },
+```
+
+- in the `user.component.ts` file
+
+```\
+  user!: { id: number; name: string };
+
+  // using ActivatedRoute to get the current route parameters
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.user = {
+      id: this.route.snapshot.params['id'],
+      name: this.route.snapshot.params['name'],
+    };
+  }
+```
+
+here we are using the **snapshot** to get the route parameters
+
+- in the `user.component.html` file
+
+```\
+  <p>User with ID {{ user.id }} loaded!</p>
+  <p>User name is {{ user.name }}</p>
+```
+
+### get the data from the url using observable
+
+- in the `user.component.ts` file
+
+```\
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.user = {
+        id: params['id'],
+        name: params['name'],
+      };
+    });
+  }
+```
+
+previously we were using the **snapshot** to get the route parameters
+but that will not work if we are navigating to the same component this is because the **snapshot** will not update the data. therefore, we are using the **observable** to get the route parameters
+
+### passing the query parameters
+
+using the following we can pass the query parameters
+
+```\
+  <a [routerLink]="['/users', 1, 'admin']" [queryParams]="{allowEdit: 1}">Users</a>
 ```

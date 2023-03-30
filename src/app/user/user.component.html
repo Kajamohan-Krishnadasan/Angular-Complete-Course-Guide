@@ -1,19 +1,8 @@
-<div class="d-flex my-2">
-  <div class="d-flex flex-column">
-    <span> User Name : {{ user.name }} </span>
-    <span> Status : {{ user.status }} </span>
-  </div>
+<div>
+  <div>User with ID is {{ user.id }}</div>
+  <div>User with Name is {{ user.name }}</div>
+</div>
 
-  <span class="d-flex">
-    <button class="btn btn-sm btn-primary m-1" (click)="updateStatus('Active')">
-      Set Active
-    </button>
-
-    <button
-      class="btn btn-sm btn-warning m-1"
-      (click)="updateStatus('Inactive')"
-    >
-      Set Inactive
-    </button>
-  </span>
+<div>
+  <a [routerLink]="['/users', 13, 'kaja']">Get Details of Kaja</a>
 </div>

@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row my-3">
+    <div class="col-sm-12">
+      <app-third-add-user></app-third-add-user>
+    </div>
+  </div>
+
+  <hr class="hr" />
+
+  <div class="row">
+    <div class="col-sm-12">
+      <app-third-user
+        *ngFor="let user of users; let i = index"
+        [user]="user"
+        [id]="i"
+      >
+      </app-third-user>
+    </div>
+  </div>
+</div>
