@@ -2200,6 +2200,3 @@ disabled the submit button if the form is invalid using the **disabled** attribu
 set default value for gender here we using the **[ngModel] = "DefaultGender"** and we need to define **DefaultGender** value in the typescript file. if we change the value in the select element it will not change the value in the **DefaultGender** variable in the typescript file. Because we are using the **one way data binding**.
 
 set default value for about here we using the **[(ngModel)] = "about"** and we need to define **about** value in the typescript file. if we change the value in the textarea element it will change the value in the **about** variable in the typescript file. because we are using the **two way data binding**.
-
-
-### 
