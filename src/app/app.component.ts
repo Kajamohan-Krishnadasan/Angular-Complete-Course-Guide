@@ -1,17 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthService } from './services/auth.service';
+import { UserService } from './services/user.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'Angular-Complete-Course-Guide';
   isButtonDisable: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  userAdded: boolean = false;
+  userAddedSubscription!: Subscription;
 
-  ngOnInit(): void {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
+
+  ngOnInit() {
+    this.userAddedSubscription = this.userService.userAddedEvent.subscribe((data) => {
+      this.userAdded = data;
+    });
+  }
 
   onLogin() {
     this.isButtonDisable = !this.isButtonDisable;
@@ -21,5 +33,9 @@ export class AppComponent {
   onLogout() {
     this.isButtonDisable = !this.isButtonDisable;
     this.authService.logout();
+  }
+
+  ngOnDestroy() {
+    this.userAddedSubscription.unsubscribe();
   }
 }

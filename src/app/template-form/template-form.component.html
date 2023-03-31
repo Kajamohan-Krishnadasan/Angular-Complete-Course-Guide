@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <form (ngSubmit)="formSubmit()" #formReference="ngForm">
+        <div class="form-group mt-3">
+          <label for="userame">User Name</label>
+          <input
+            class="form-control"
+            type="text"
+            id="userame"
+            name="username"
+            ngModel
+            required
+          />
+        </div>
+
+        <div class="form-group mt-3">
+          <label for="email">Email</label>
+          <input
+            class="form-control"
+            type="text"
+            id="email"
+            name="email"
+            ngModel
+            required
+            email
+            #emailRef="ngModel"
+          />
+
+          <!-- method 1 -->
+          <!-- <span
+            class="help-text"
+            *ngIf="
+              formReference.controls['email'] &&
+              !formReference.controls['valid'] &&
+              formReference.controls['email'].touched
+            "
+          >
+            Please enter valid email
+          </span> -->
+
+          <!-- method 2 -->
+          <span class="help-text" *ngIf="!emailRef.valid && emailRef.touched">
+            Please enter valid email
+          </span>
+        </div>
+
+        <div class="form- mt-3">
+          <label for="gender">Gender</label>
+          <select
+            class="form-control"
+            id="gender"
+            name="gender"
+            [ngModel]="DefaultGender"
+          >
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+        <div class="form-group mt-3">
+          <label> About</label>
+          <textarea
+            class="form-control"
+            rows="3"
+            name="about"
+            [(ngModel)]="about"
+          ></textarea>
+        </div>
+
+        <div class="mt-3">
+          {{ about }}
+        </div>
+
+        <div class="mt-3">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!formReference.valid"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

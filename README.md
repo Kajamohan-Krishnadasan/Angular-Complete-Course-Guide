@@ -560,7 +560,7 @@ using `ng-content` we can display the content in the parent component.
 ```\
  <label class="m-2">
     Email :
-    <input type="email" class="form-control" #userMail />
+    <input type="email" #userMail />
   </label>
 
   <button class="btn btn-primary mx-3" (click)="addUserMail(userMail)">
@@ -1771,3 +1771,435 @@ we need to add **useHash: true** in the **RouterModule.forRoot** method to use t
     RouterModule.forRoot(appRoutes, { useHash: true }),
   ],
 ```
+
+## Observables
+
+### introduction to observables in angular and rxjs
+
+observable is a function and it will return a stream of data. And we can subscribe more than one function to the observable.
+
+- observable is not dependent on components.
+  this will affect the performance of the application.
+
+restrict this one we need to unsubscribe the observable.
+
+- in the `home.component.ts` file
+
+```\
+  ngOnInit() {
+   // observable
+    interval(1000).subscribe((data) => {
+      console.log(data);
+    });
+  }
+```
+
+above code we are using the **interval** method to create the observable. and we are subscribing the observable to get the data. This will print the data every 1 second.
+(0,1,2,3,.....)
+
+stop this we need to unsubscribe the observable.
+therefore we need to store the observable in the variable and unsubscribe the observable.
+
+- in the `home.component.ts` file
+
+```\
+
+intervalSubscription!: Subscription;
+
+  ngOnInit() {
+    // observable
+    this.intervalSubscription = interval(1000).subscribe((data) => {
+      console.log(data);
+    });
+  }
+
+  ngOnDestroy() {
+
+    this.intervalSubscription.unsubscribe();
+  }
+```
+
+- above code we are storing the observable in the **intervalSubscription** variable. and we are unsubscribing the observable in the **ngOnDestroy** method.
+  so that it will not print any more values after the component is destroyed. Otherwise it will print values even after the component is destroyed
+
+- Angular observable is auto unsubscribe when the component is destroyed. But we need to unsubscribe the observable when we are using the custom observable are using the third party observable.
+  - `eg:- interval, timer, fromEvent`
+
+### create the custom observable
+
+- in the `home.component.ts` file
+
+```\
+  ngOnInit() {
+    // custom observable
+    let customObservable = Observable.create((observer: any) => {
+      let count = 10;
+      setInterval(() => {
+        // this will send the value to the subscriber
+        observer.next(count);
+        count++;
+      }, 1000);
+    });
+
+    // subscribe method
+    this.customObservableSubscription = customObservable.subscribe(
+      (data: any) => {
+        console.log('Custom Observable : ', data);
+      }
+    );
+  }
+```
+
+### catch the error in the observable
+
+- in the `home.component.ts` file
+  here we are using the **error** method in the **observer** to send the error to the subscriber.
+
+```\
+  // in the custom observable creation
+  setInterval(() => {
+    // old code
+
+    // this will send the error to the subscriber
+    if (count > 15) {
+      observer.error(new Error('Count is greater than 15'));
+    }
+  }, 1000);
+
+
+  // in the subscribe method
+  subscribe(
+    // old code
+
+    // this will catch the error
+    ,
+    (error: any) => {
+      console.log(error);
+    }
+  );
+
+```
+
+when the count is greater than 15 it will send the error to the subscriber. And this will print the error in the console and it will not print any more values.
+
+### complete in the observable
+
+- in `home.component.ts` file
+  here we are using the **complete** method in the **observer** to complete the observable.
+
+```\
+// in the custom observable creation
+  setInterval(() => {
+    // old code
+
+    // this will complete the observable
+    if (count > 20) {
+      observer.complete();
+    }
+  }, 1000);
+
+  // in the subscribe method
+  subscribe(
+    // old code
+
+    // this will complete the observable
+    ,
+    () => {
+      console.log('Completed');
+    }
+  );
+
+```
+
+when the count is greater than 20 it will complete the observable. And it will not print any more values.
+
+### Operators in the observable
+
+this is used to customize the data in the observable.
+before sending the data to the subscriber we can customize the data using the operators.
+
+### map operator
+
+- in `home.component.ts` file
+
+```\
+  // using the map operator in the Observable
+  this.customObservableSubscription = customObservable
+    .pipe(
+      map((data) => {
+        return 'Count is : ' + data;
+      })
+    )
+    .subscribe(
+      (data: Data) => {
+        console.log('Custom Observable : ', data);
+      },
+      (error: Error) => {
+        console.log(error);
+      },
+      () => {
+        console.log('Completed');
+      }
+    );
+```
+
+above code will print the data in the console with the message **Custom Observable : Count is : 1**.
+here we are using the **map** operator to customize the data. and we are using the **pipe** method to use the operator.
+
+#### filter operator
+
+this will send the data to the subscriber only if the condition is true.
+
+- in `home.component.ts` file
+
+```\
+  // using the filter operator in the Observable
+   this.customObservableSubscription = customObservable
+    .pipe(
+      filter((data: number) => {
+        if (data > 0) return true;
+        return false;
+      }),
+      map((data: number) => {
+        data = data + 1;
+        return 'Count is : ' + data;
+      })
+    )
+    .subscribe(
+      (data: Data) => {
+        console.log('Custom Observable : ', data);
+      },
+      (error: Error) => {
+        console.log(error);
+      },
+      () => {
+        console.log('Completed');
+      }
+    );
+```
+
+here if we are using the **filter** operator it will send the data to the subscriber only if the data is greater than 0. otherwise it will not send the data to the subscriber.
+
+## subject
+
+this is used to component communication.
+
+### without subject
+
+- in `users.component.html` file
+
+```\
+ <button class="btn btn-primary" (click)="userAddedClick()">
+    User Added
+  </button>
+```
+
+- in `users.component.ts` file
+
+```\
+  constructor(
+    private router: Router,
+    private userService: UserService
+    ) {}
+
+  userAddedClick() {
+    this.userService.addUser();
+  }
+```
+
+- in `user.service.ts` file
+
+```\
+  userAddedEvent = new EventEmitter<boolean>();
+
+  addUser() {
+    this.userAddedEvent.emit(true);
+  }
+```
+
+here we are using the **EventEmitter** and **emit** method to send the data from the **users.component** to the **app.component**.
+
+- in `app.component.html` file
+
+```\
+  <div *ngIf="userAdded">User Added Button Clicked</div>
+```
+
+- in `app.component.ts` file
+
+```\
+
+  userAdded: boolean = false;
+
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
+
+  ngOnInit(): void {
+    this.userService.userAddedEvent.subscribe((data) => {
+      this.userAdded = data;
+    });
+  }
+```
+
+here we are using the **EventEmitter** to send the data from the **users.component** to the **app.component**.
+
+### with subject
+
+- in `users.service.ts` file
+
+```\
+  userAdded = new Subject<boolean>();
+
+  addUser() {
+    this.userAdded.next(true);
+  }
+```
+
+here we are using the **Subject** instead of the **EventEmitter** and instead of **emit** method we are using the **next** method.
+
+other code is same as the above code.
+
+## Form Handling
+
+### Template Driven Form
+
+- in `app.module.ts` file
+  - import the **FormsModule** from the **@angular/forms** package
+
+```\
+  import { FormsModule } from '@angular/forms';
+    imports: [
+      FormsModule
+    ],
+```
+
+- in `template-form.component.html` file
+
+```\
+  <form (ngSubmit)="formSubmit(formReference)" #formReference="ngForm">
+
+    <label for="userame">User Name</label>
+    <input type="text" id="userame" name="username" ngModel/>
+
+    <label for="email">Email</label>
+    <input type="text" id="email" name="email" ngModel />
+
+    <label for="gender">Gender</label>
+    <select id="gender" name="gender" ngModel>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+
+    <button type="submit">Submit</button>
+  </form>
+```
+
+here we need to add the **ngModel** directive and **name** attribute to the input and select elements.
+Other thing is we need to add form reference to the **form** element here i'm using **#formReference** and convert this form html element to object we need to add **ngForm** in the from reference. finally send this form reference in **formSubmit()** method.
+
+- in `template-form.component.ts` file
+
+- method 1
+
+  ```\
+
+    formSubmit(formReference: NgForm) {
+      console.log('Form Submitted');
+      console.log(formReference.value);
+    }
+  ```
+
+  if we want to print we should pass the form reference in the form html file other wise we should use @ViewChild to access this
+
+- method 2
+
+  ```\
+  @ViewChild('formReference') signUpForm!: NgForm;
+
+  formSubmit() {
+    console.log(this.signUpForm.value);
+  }
+  ```
+
+above **formSubmit** method will execute when the submit button is clicked.
+
+### validate the form
+
+we should add the **required** attribute to the input element to validate the form.
+
+disabled the submit button if the form is invalid using the **disabled** attribute.
+**formReference.valid** will return the boolean value depending on the form is valid or not.
+
+```\
+  <button
+    type="submit"
+    [disabled]="!formReference.valid"
+  >Submit</button>
+```
+
+- validate the email and display the **red border**
+
+  - in `template-form.component.html` file
+
+  ```\
+    <label for="email">Email</label>
+    <input
+      type="text"
+      id="email"
+      name="email"
+      ngModel
+      required
+      email
+      #emailReference="ngModel"
+    />
+
+    // method 1
+    <span
+      class="help-text"
+      *ngIf=" formReference.controls['email'] &&
+              !formReference.controls['valid'] &&
+              formReference.controls['email'].touched"
+    >
+      Please enter valid email
+    </span>
+
+    // method 2
+    <span
+      class="help-text"
+      *ngIf="emailReference.invalid && emailReference.touched"
+    >
+      Email is invalid
+    </span>
+  ```
+
+  here we are using the **email** directive to validate the email and we are using the **#emailReference** to access the **ngModel** directive and we are using the **invalid** and **touched** property to display the error message.
+
+  - in `template-form.component.scss` file
+
+  ```\
+    form {
+
+      .ng-invalid.ng-touched {
+        border: 3px solid red;
+      }
+
+      .help-text {
+        color: red;
+        font-style: italic;
+      }
+    }
+
+  ```
+
+  here we are using the **ng-invalid** and **ng-touched** class to display the red border and these classes are added by the angular automatically.
+
+### one way and two way data binding
+
+set default value for gender here we using the **[ngModel] = "DefaultGender"** and we need to define **DefaultGender** value in the typescript file. if we change the value in the select element it will not change the value in the **DefaultGender** variable in the typescript file. Because we are using the **one way data binding**.
+
+set default value for about here we using the **[(ngModel)] = "about"** and we need to define **about** value in the typescript file. if we change the value in the textarea element it will change the value in the **about** variable in the typescript file. because we are using the **two way data binding**.
+
+
+### 

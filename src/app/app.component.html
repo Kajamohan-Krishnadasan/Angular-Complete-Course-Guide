@@ -47,12 +47,24 @@
             Categories
           </a>
         </li>
+
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [routerLink]="['/templateform']"
+            routerLinkActive="active"
+          >
+            Template Form
+          </a>
+        </li>
       </ul>
     </div>
 
     <div class="col-md-9">
       <div class="row">
         <div class="col-md-12">
+          <div *ngIf="userAdded">User Added Button Clicked</div>
+
           <router-outlet></router-outlet>
         </div>
       </div>

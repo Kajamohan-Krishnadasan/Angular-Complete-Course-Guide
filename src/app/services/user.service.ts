@@ -1,4 +1,9 @@
+import { EventEmitter } from '@angular/core';
+
 export class UserService {
+  // this will enable and disable the button in app.component.html
+  userAddedEvent = new EventEmitter<boolean>();
+
   getUser(id: string) {
     if (id === '1') {
       return {
@@ -11,5 +16,9 @@ export class UserService {
         name: 'Anu',
       };
     }
+  }
+
+  addUser() {
+    this.userAddedEvent.emit(true);
   }
 }

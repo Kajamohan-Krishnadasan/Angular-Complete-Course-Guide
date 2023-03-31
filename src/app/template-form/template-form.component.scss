@@ -1,0 +1,9 @@
+form {
+  .ng-invalid.ng-touched {
+    border: 3px solid red;
+  }
+  .help-text {
+    color: red;
+    font-style: italic;
+  }
+}
