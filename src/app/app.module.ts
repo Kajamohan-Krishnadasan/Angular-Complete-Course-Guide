@@ -6,27 +6,16 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { UsersComponent } from './users/users.component';
 import { CategoriesComponent } from './categories/categories.component';
-import { RouterModule, Routes } from '@angular/router';
 import { UserComponent } from './user/user.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AuthService } from './services/auth.service';
+import { AuthGuardService } from './services/guards/auth-guard.service';
+import { DeactivateGuardService } from './services/guards/deactivate-guard.service';
+import { UserResolveService } from './services/resolvers/user-resolve.services';
+import { UserService } from './services/user.service';
 
-const allRoutesOfApp: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-  },
-  {
-    path: 'users',
-    component: UsersComponent,
-  },
-  {
-    path: 'categories',
-    component: CategoriesComponent,
-  },
-  {
-    path: 'users/:id/:name',
-    component: UserComponent,
-  },
-];
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,9 +23,19 @@ const allRoutesOfApp: Routes = [
     UsersComponent,
     CategoriesComponent,
     UserComponent,
+    EditUserComponent,
+    PageNotFoundComponent,
   ],
-  imports: [BrowserModule, FormsModule, RouterModule.forRoot(allRoutesOfApp)],
-  providers: [],
+
+  imports: [BrowserModule, FormsModule, AppRoutingModule],
+
+  providers: [
+    AuthService,
+    AuthGuardService,
+    DeactivateGuardService,
+    UserResolveService,
+    UserService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

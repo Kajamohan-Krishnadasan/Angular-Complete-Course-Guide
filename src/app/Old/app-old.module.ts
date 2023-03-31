@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from '../app-routing.module';
-import { AppComponent } from '../app.component';
+import { AppComponent as OldAppComponent } from './app-old.component';
 import { UserComponent as SecondUser } from './Second/user/user.component';
 import { UsersComponent as SecondUsers } from './Second/users/users.component';
 import { UserComponent as FirstUser } from './First/user/user.component';
@@ -15,13 +13,10 @@ import { RenderHighlightDirective } from './Directives/render-highlight.directiv
 import { AlternateIfDirective } from './Directives/AlternateIf.directive';
 import { UserComponent as ThirdUser } from './Third/user/user.component';
 import { AddUserComponent as ThirdAddUser } from './Third/add-user/add-user.component';
-import { HomeComponent } from '../home/home.component';
-import { UsersComponent } from '../users/users.component';
-import { CategoriesComponent } from '../categories/categories.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    OldAppComponent,
     FirstUser,
     FirstUsers,
     SecondUser,
@@ -33,12 +28,9 @@ import { CategoriesComponent } from '../categories/categories.component';
     AlternateIfDirective,
     ThirdUser,
     ThirdAddUser,
-    HomeComponent,
-    UsersComponent,
-    CategoriesComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  imports: [BrowserModule, FormsModule],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [OldAppComponent],
 })
 export class AppModule {}

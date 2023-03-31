@@ -1,8 +1,52 @@
 <div>
-  <div>User with ID is {{ user.id }}</div>
-  <div>User with Name is {{ user.name }}</div>
+  <div>
+    User with ID is <b> {{ user.id }} </b>
+  </div>
+  <div>
+    User with Name is <b>{{ user.name }} </b>
+  </div>
 </div>
 
+<hr />
 <div>
-  <a [routerLink]="['/users', 13, 'kaja']">Get Details of Kaja</a>
+  <button class="btn btn-secondary" (click)="userEdit()">Edit user</button>
+</div>
+
+<div style="display: none">
+  <div>
+    <!-- with out using close brackets -->
+    <h4>using routerLink without [ ] brackets</h4>
+    <a routerLink="/users/13/kaja"> Get Details of Kaja </a>
+
+    <!-- using close brackets -->
+    <h4>using routerLink</h4>
+    <a [routerLink]="['/users', 13, 'kaja']"> Get Details of Kaja </a>
+
+    <!-- passing query parameters to url -->
+    <h4>using routerLink and queryParams</h4>
+    <a
+      [routerLink]="['/users', 13, 'Kaja']"
+      [queryParams]="{ page: 1, search: 'kaja' }"
+    >
+      Get Details of Kaja
+    </a>
+
+    <!-- passing the fragments parameters -->
+    <h4>using routerLink, queryParams and fragment</h4>
+    <a
+      [routerLink]="['/users', 13, 'Kaja']"
+      [queryParams]="{ page: 1, search: 'kaja' }"
+      [fragment]="'load'"
+    >
+      Get Details of Kaja
+    </a>
+  </div>
+
+  <div class="my-2">
+    <!-- passing the fragments parameters using click events -->
+    <h4>using routerLink, queryParams and fragment in the cilck event</h4>
+    <button class="btn btn-primary" (click)="getRamaDetails()">
+      Get Rama Details
+    </button>
+  </div>
 </div>

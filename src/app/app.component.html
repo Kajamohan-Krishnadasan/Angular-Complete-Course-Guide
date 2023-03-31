@@ -1,4 +1,23 @@
 <div class="container">
+  <div class="row mb-5 mt-2">
+    <div class="col-md-12">
+      <button
+        class="btn btn-primary mx-3"
+        (click)="onLogin()"
+        [disabled]="isButtonDisable"
+      >
+        Login
+      </button>
+      <button
+        class="btn btn-danger"
+        (click)="onLogout()"
+        [disabled]="!isButtonDisable"
+      >
+        Logout
+      </button>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-md-3">
       <ul class="nav flex-column nav-pills">
@@ -8,14 +27,15 @@
             routerLink="/"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
-            >Home
+          >
+            Home
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/users" routerLinkActive="active"
-            >Users</a
-          >
+          <a class="nav-link" routerLink="/users" routerLinkActive="active">
+            Users
+          </a>
         </li>
 
         <li class="nav-item">
@@ -23,11 +43,13 @@
             class="nav-link"
             [routerLink]="['/categories']"
             routerLinkActive="active"
-            >Categories</a
           >
+            Categories
+          </a>
         </li>
       </ul>
     </div>
+
     <div class="col-md-9">
       <div class="row">
         <div class="col-md-12">

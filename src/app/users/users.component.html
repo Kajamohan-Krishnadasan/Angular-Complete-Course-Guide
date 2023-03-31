@@ -1,4 +1,51 @@
 <h3>Users Page</h3>
+
+<!-- <div style="display: none"></div> -->
+
+<div class="m-2">
+  <button class="btn btn-warning" (click)="onNavigateToCategories()">
+    Go to Categories
+  </button>
+</div>
+
+<div class="m-2">
+  <button class="btn btn-primary" (click)="onNavigateToKajaUser()">
+    Go to Kajamohan user
+  </button>
+</div>
+
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a
+      [routerLink]="['/users', 1, 'Kaja']"
+      [queryParams]="{ page: 1, search: 'Kaja' }"
+      class="nav-link"
+    >
+      Get Kaja Details
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a
+      [routerLink]="['/users', 2, 'Arshath']"
+      [queryParams]="{ page: 1, search: 'Arshath' }"
+      class="nav-link"
+    >
+      Get Arshath Details
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a
+      [routerLink]="['/users', 3, 'Jathurshan']"
+      [queryParams]="{ page: 1, search: 'Kaja' }"
+      class="nav-link"
+    >
+      Get Jathurshan Details
+    </a>
+  </li>
+</ul>
+
 <div>
-  <button class="btn btn-warning" (click)="onNavigateToCategories()">Go to Categories</button>
+  <router-outlet></router-outlet>
 </div>

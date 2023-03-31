@@ -1162,8 +1162,612 @@ but that will not work if we are navigating to the same component this is becaus
 
 ### passing the query parameters
 
-using the following we can pass the query parameters
+- using the following we can pass the query parameters
+- if we need the url to be like this **/users/13/Kaja?page=1&search=kaja**
+- here we are using the **queryParams** to pass the query parameters
 
 ```\
-  <a [routerLink]="['/users', 1, 'admin']" [queryParams]="{allowEdit: 1}">Users</a>
+   <a
+    [routerLink]="['/users', 13, 'Kaja']"
+    [queryParams]="{ page: 1, search: 'kaja' }"
+    >
+    Get Details of Kaja
+    </a>
+```
+
+- if we need the url to be like this **/users/13/Kaja?page=1&search=kaja#load**
+- here we are using the **fragment** to pass the fragment
+
+```\
+  <a
+    [routerLink]="['/users', 13, 'Kaja']"
+    [queryParams]="{ page: 1, search: 'kaja' }"
+    [fragment]="'load'"
+    >
+    Get Details of Kaja
+  </a>
+```
+
+use this in the button click event
+
+- in the `user.component.html` file
+
+```\
+  <button (click)="getRamaDetails()">Get Rama Details</button>
+```
+
+- in the `user.component.ts` file
+
+```\
+  getRamaDetails() {
+    /*
+    * using this method we can
+    * navigate to another route and
+    * our url will be changed to
+    * /users/20/Rama?page=2&search=newest#loading
+    */
+    this.router.navigate(['/users', 20, 'Rama'], {
+      queryParams: { page: 2, search: 'newest' },
+      fragment: 'loading',
+    });
+  }
+```
+
+- we can access this using below code
+
+```\
+  // get the query parameters and fragment
+  // method 1
+  console.log('(Method 1) queryParams: ', this.route.snapshot.queryParams);
+  console.log('(Method 1) fragement: ', this.route.snapshot.fragment);
+
+  // method 2
+  this.route.queryParams.subscribe((data) =>
+    console.log('(Method 2) queryParams: ', data)
+  );
+
+  this.route.fragment.subscribe((data) => {
+    console.log('(Method 2) fragement: ', data);
+  });
+```
+
+### nested routes
+
+child routes are used to create the nested routes
+
+- in the `app.module.ts` file
+
+```\
+  {
+    path: 'users',
+    component: UsersComponent,
+    children: [
+      {
+        path: ':id/:name',
+        component: UserComponent,
+      },
+    ],
+  },
+```
+
+- in the `users.component.html` file
+
+```\
+  <router-outlet></router-outlet>
+```
+
+using the **router-outlet** we can render the child routes
+
+### Preserving Query Parameters
+
+- sent the query parameters to next page
+
+  ```\
+    <a
+      [routerLink]="['/users', 13, 'Kaja']"
+      [queryParams]="{ page: 1, search: 'kaja' }"
+      [queryParamsHandling]="'preserve'"
+      >
+      Get Details of Kaja
+    </a>
+  ```
+
+other options are **merge** and **preserve**
+otherwise we can use this in the button click event
+
+- in the `user.component.ts` file
+
+```\
+   userEdit() {
+    this.router.navigate(['/users', this.user.id, this.user.name, 'edit'], {
+        queryParamsHandling: 'preserve',
+      });
+  }
+```
+
+### implementing the 404 page
+
+this will helpful if the user enter the wrong url
+
+- in the `app.module.ts` file
+
+```\
+  {
+    path: 'not-found',
+    component: PageNotFoundComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '/not-found',
+  },
+```
+
+above code **{ path: \*\* , path: 'not-found' }** should be at the end of the routes
+if we use this code in the starting of the routes then other all routes will be redirected to the **not-found** page
+
+### use separate module for routing
+
+- create the file `app-routing.module.ts` in the `app` folder
+- add the following code in the route module
+
+```\
+  const allRoutesOfApp: Routes = [
+    {
+      path: '',
+      component: HomeComponent,
+    },
+    {
+      path: 'users',
+      component: UsersComponent,
+      children: [
+        {
+          path: ':id/:name',
+          component: UserComponent,
+        },
+        {
+          path: ':id/:name/edit',
+          component: EditUserComponent,
+        },
+      ],
+    },
+    {
+      path: 'categories',
+      component: CategoriesComponent,
+    },
+    {
+      path: 'not-found',
+      component: PageNotFoundComponent,
+    },
+    {
+      path: '**',
+      redirectTo: '/not-found',
+    },
+  ];
+
+  @NgModule({
+    imports: [RouterModule.forRoot(allRoutesOfApp)],
+    exports: [RouterModule],
+  })
+  export class AppRoutingModule {}
+
+```
+
+### Route Guards
+
+3 types of route guards are there,
+
+1. CanActivate
+2. CanActivateChild
+3. CanDeactivate
+
+### canActivate
+
+this is used to protect the routes if the user is not logged in then he can't access the routes.
+
+- in the `app-routing.module.ts` file
+
+```\
+  const allRoutesOfApp: Routes = [
+    {
+      path: '',
+      component: HomeComponent,
+    },
+    {
+      path: 'users',
+      component: UsersComponent,
+      canActivate: [AuthGuard],
+      children: [
+        {
+          path: ':id/:name',
+          component: UserComponent,
+        },
+        {
+          path: ':id/:name/edit',
+          component: EditUserComponent,
+        },
+      ],
+    },
+    // other routes
+  ];
+
+```
+
+here we are using the **canActivate** to protect the routes'.
+here we are using the **AuthGuard** to check the user is logged in or not.
+if the user is not logged in then he can't access the UserComponent and EditUserComponent.
+
+- create the file `auth.guard.ts` in the `service/guards` folder
+- create the file `auth.service.ts` in the `service` folder
+
+- in `auth.service.ts` file
+
+```\
+  export class AuthService {
+    isloggedIn = false;
+
+    login() {
+      this.isloggedIn = true;
+    }
+
+    logout() {
+      this.isloggedIn = false;
+    }
+
+    isAuthenticated() {
+      return this.isloggedIn;
+    }
+  }
+```
+
+in the above code we are using the **isloggedIn** variable to check the user is logged in or not
+
+- in `auth.guard.ts` file
+
+```\
+  export class AuthGuard implements CanActivate {
+    constructor(private authService: AuthService, private router: Router) {}
+
+    canActivate(
+      next: ActivatedRouteSnapshot,
+      state: RouterStateSnapshot
+    ): Observable<boolean> | Promise<boolean> | boolean {
+      if (this.authService.isAuthenticated()) {
+        return true;
+      } else {
+        this.router.navigate(['/']);
+        return false;
+      }
+    }
+  }
+```
+
+- canActive is used to check the user is logged in or not
+- if the user is not logged in then he will be redirected to the home page
+
+### canActivateChild
+
+- this will be used to protect the child routes.
+  but this will not be used to protect the parent routes.
+  parent will render without any child routes.
+
+- otherwise we need to add the **canActivate** to the child routes
+
+```\
+  {
+    path: 'users',
+    component: UsersComponent,
+
+    children: [
+      {
+        path: ':id/:name',
+        component: UserComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: ':id/:name/edit',
+        component: EditUserComponent,
+        canActivate: [AuthGuard],
+      },
+    ],
+  },
+```
+
+here UserComponent and EditUserComponent will be rendered only if the user is logged in.
+
+- use the **canActivateChild** to protect the child routes
+
+```\
+  {
+    path: 'users',
+    component: UsersComponent,
+    canActivateChild: [AuthGuard],
+    children: [
+      {
+        path: ':id/:name',
+        component: UserComponent,
+      },
+      {
+        path: ':id/:name/edit',
+        component: EditUserComponent,
+      },
+    ],
+  },
+```
+
+- in `auth.guard.ts` file add the following code
+
+```\
+  export class AuthGuard implements CanActivate, CanActivateChild {
+    constructor(private authService: AuthService, private router: Router) {}
+
+    canActivate(
+      next: ActivatedRouteSnapshot,
+      state: RouterStateSnapshot
+    ): Observable<boolean> | Promise<boolean> | boolean {
+      if (this.authService.isAuthenticated()) {
+        return true;
+      } else {
+        this.router.navigate(['/']);
+        return false;
+      }
+    }
+
+    canActivateChild(
+      next: ActivatedRouteSnapshot,
+      state: RouterStateSnapshot
+    ): Observable<boolean> | Promise<boolean> | boolean {
+      if (this.authService.isAuthenticated()) {
+        return true;
+      } else {
+        this.router.navigate(['/']);
+        return false;
+      }
+    }
+  }
+```
+
+- delay few seconds to redirect to the home page or child routes we can use the **setTimeout** method in the **canActivateChild** method or we can add in the `auth.service.ts` file
+
+- in the `auth.guard.ts` file
+
+```\
+  canActivateChild(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    return this.canActivate(route, state);
+  }
+```
+
+- in the `auth.service.ts` file
+
+```\
+  isAuthenticated() {
+      // here we can use a promise to simulate a server response
+      // and then return the value of this.isloggedIn
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(this.isloggedIn);
+        }, 1000);
+      });
+    }
+```
+
+### canDeactivate
+
+- canDeactivate is used to protect the routes when the user is trying to leave the route.
+- when the user going to route1 to route2,
+
+  - then the **canDeactivate** method will be called in the route1
+  - and **canActive** method will be called in the route2.
+
+- this is mainly used in the edit the data in the form.
+
+- in the `app-routing.module.ts` file
+
+```\
+  {
+    path: 'users',
+    component: UsersComponent,
+    canActivateChild: [AuthGuard],
+    children: [
+      {
+        path: ':id/:name',
+        component: UserComponent,
+      },
+      {
+        path: ':id/:name/edit',
+        component: EditUserComponent,
+        canDeactivate: [CanDeactivateGuard],
+      },
+    ],
+  },
+```
+
+herere we are using the **canDeactivate** to protect the EditUserComponent. if the user is trying to leave the EditUserComponent then the **canDeactivate** method will be called.
+
+- create the file `deactivate.guard.ts` in the `service/guards` folder
+
+- in the `deactivate.guard.ts` file
+
+```\
+  export interface IDeactivateGuard {
+    canExit: () => boolean | Promise<boolean> | Observable<boolean>;
+  }
+
+  export class DeactivateGuardService implements CanDeactivate<IDeactivateGuard> {
+    canDeactivate(
+      component: IDeactivateGuard,
+      route: ActivatedRouteSnapshot,
+      state: RouterStateSnapshot,
+      nextState: RouterStateSnapshot
+    ): boolean | Promise<boolean> | Observable<boolean> {
+      return component.canExit();
+    }
+  }
+
+```
+
+- in `edit-user.component.ts` file
+
+```\
+  ngOnInit() {
+    this.route.params.subscribe((data) => {
+      this.user = {
+        id: data['id'],
+        name: data['name'],
+      };
+
+      // save the original user details
+      this.editUserDetails = { ...this.user };
+    });
+  }
+```
+
+above code will get the user details from the route params and save the original user details in the **editUserDetails** variable.
+
+```\
+  canExit() {
+    if (
+      this.user.id !== this.editUserDetails.id ||
+      this.user.name !== this.editUserDetails.name
+    ) {
+      if (
+        confirm(
+          'All changes will be lost if you move to another page. \nAre you sure you want to exit? '
+        )
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+```
+
+above code will check the user details are changed or not. if the user details are changed then it will ask the user to confirm to leave the page or not. if the user details are not changed then it will not ask the user to confirm to leave the page.
+
+### passing static data to the route
+
+- we can pass the static data to the route using the **data** property in the route.
+- in the `app-routing.module.ts` file
+
+```\
+  {
+    path: '',
+    component: HomeComponent,
+    data: { page: 55, search: 'Niroshan' },
+  },
+```
+
+we can access the data in the route using the **ActivatedRoute** service.
+
+- in the `home.component.ts` file
+- here we are using **data** property in the **ActivatedRoute** service to get the data from the route.
+
+```\
+  ngOnInit() {
+    this.route.data.subscribe((data) => {
+      console.log(data);
+    });
+  }
+```
+
+### passing dynamic data to the route
+
+- we can pass the dynamic data to the route using the **resolve** property in the route.
+  resolve property is used to get the data from the server before the route is loaded.
+
+- in the `app-routing.module.ts` file
+
+```\
+  {
+    path: 'users',
+    component: UsersComponent,
+    resolve: { users: UsersResolverService },
+  },
+```
+
+- in the `users-resolver.service.ts` file
+
+```\
+interface User {
+  id: number;
+  name: string;
+}
+
+@Injectable()
+export class UserResolveService implements Resolve<User> {
+  constructor(private userService: UserService) {}
+
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): User | Observable<User> | Promise<User> {
+    let id = route.params['id'];
+
+    let details = this.userService.getUser(id);
+
+    return details;
+  }
+```
+
+here we are using the user service to get the user details and return the user details.
+
+- in the `users.service.ts` file
+
+```\
+  export class UserService {
+  getUser(id: string) {
+
+    if (id === '1') {
+
+      return {
+        id: 1,
+        name: 'Saji',
+      };
+
+    } else {
+
+      return {
+        id: 77,
+        name: 'Anu',
+      };
+
+    }
+  }
+}
+
+```
+
+- in the `edit-user.component.ts` file
+
+```\
+  ngOnInit() {
+
+    // using resolver
+    this.route.data.subscribe((data) => {
+      console.log(data['user']);
+      this.user = {
+        id: data['user']['id'],
+        name: data['user']['name'],
+      };
+
+      // save the original user details
+      this.editUserDetails = { ...this.user };
+    });
+  }
+```
+
+### use the Hash URLs
+
+we need to add **useHash: true** in the **RouterModule.forRoot** method to use the hash URLs.
+
+```\
+  imports: [
+    BrowserModule,
+    FormsModule,
+    RouterModule.forRoot(appRoutes, { useHash: true }),
+  ],
 ```

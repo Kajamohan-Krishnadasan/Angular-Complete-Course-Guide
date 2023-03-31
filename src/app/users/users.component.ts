@@ -17,4 +17,8 @@ export class UsersComponent {
     // method 2
     this.router.navigate(['/categories']);
   }
+
+  onNavigateToKajaUser() {
+    this.router.navigate(['/users', 13, 'Kajamohan']);
+  }
 }

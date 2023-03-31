@@ -1,20 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { LogService } from './Old/Services/log.service';
-import { UserService } from './Old/Services/user.service';
-
+import { Component } from '@angular/core';
+import { AuthService } from './services/auth.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [UserService, LogService],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Angular-Complete-Course-Guide';
-  name = 'Kajamohan';
-  users: { name: string; status: string }[] = [];
+  isButtonDisable: boolean = false;
 
-  constructor(private userService: UserService) {}
-  ngOnInit() {
-    this.users = this.userService.users;
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {}
+
+  onLogin() {
+    this.isButtonDisable = !this.isButtonDisable;
+    this.authService.login();
+  }
+
+  onLogout() {
+    this.isButtonDisable = !this.isButtonDisable;
+    this.authService.logout();
   }
 }
