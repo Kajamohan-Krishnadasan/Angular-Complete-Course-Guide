@@ -1,34 +1,69 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 mb-5">
       <form (ngSubmit)="formSubmit()" #formReference="ngForm">
-        <div class="form-group mt-3">
-          <label for="userame">User Name</label>
-          <input
-            class="form-control"
-            type="text"
-            id="userame"
-            name="username"
-            ngModel
-            required
-          />
+        <!-- Here we are filling the value using button.
+          here we need to give all forms data-->
+        <button
+          type="button"
+          class="btn btn-m btn-info m-2"
+          (click)="fillValues()"
+        >
+          Fill Values ( setValue() method )
+        </button>
+
+        <!-- here we can give particular input field data or all field data -->
+        <button
+          type="button"
+          class="btn btn-m btn-info m-2"
+          (click)="fillSomeValues()"
+        >
+          Fill Values ( patchValue() method )
+        </button>
+
+        <!--
+          if the use name or email is not filled,
+          or email format is invalid below div will display
+        -->
+        <div
+          class="help-text mt-2"
+          *ngIf="userDataRef.invalid && userDataRef.touched"
+        >
+          User data is Invalid
         </div>
 
-        <div class="form-group mt-3">
-          <label for="email">Email</label>
-          <input
-            class="form-control"
-            type="text"
-            id="email"
-            name="email"
-            ngModel
-            required
-            email
-            #emailRef="ngModel"
-          />
+        <div
+          class="mt-2"
+          ngModelGroup="userNameAndEmailData"
+          #userDataRef="ngModelGroup"
+        >
+          <div class="form-group">
+            <label for="userame">User Name</label>
+            <input
+              class="form-control"
+              type="text"
+              id="userame"
+              name="username"
+              ngModel
+              required
+            />
+          </div>
 
-          <!-- method 1 -->
-          <!-- <span
+          <div class="form-group mt-3">
+            <label for="email">Email</label>
+            <input
+              class="form-control"
+              type="text"
+              id="email"
+              name="email"
+              ngModel
+              required
+              email
+              #emailRef="ngModel"
+            />
+
+            <!-- method 1 -->
+            <!-- <span
             class="help-text"
             *ngIf="
               formReference.controls['email'] &&
@@ -39,10 +74,11 @@
             Please enter valid email
           </span> -->
 
-          <!-- method 2 -->
-          <span class="help-text" *ngIf="!emailRef.valid && emailRef.touched">
-            Please enter valid email
-          </span>
+            <!-- method 2 -->
+            <span class="help-text" *ngIf="!emailRef.valid && emailRef.touched">
+              Please enter valid email
+            </span>
+          </div>
         </div>
 
         <div class="form- mt-3">
@@ -82,6 +118,17 @@
           </button>
         </div>
       </form>
+    </div>
+
+    <!-- Display the user Input Data -->
+    <div *ngIf="submitted" class="container m-3">
+      <h3>Your Data</h3>
+      <div>
+        <span> Username: {{ user.username }} </span> <br />
+        <span> Email: {{ user.email }} </span> <br />
+        <span> Gender: {{ user.gender }} </span> <br />
+        <span> About: {{ user.about }} </span> <br />
+      </div>
     </div>
   </div>
 </div>

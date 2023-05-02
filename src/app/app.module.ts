@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -16,7 +16,13 @@ import { DeactivateGuardService } from './services/guards/deactivate-guard.servi
 import { UserResolveService } from './services/resolvers/user-resolve.services';
 import { UserService } from './services/user.service';
 import { TemplateFormComponent } from './template-form/template-form.component';
+import { ReactiveFormsComponent } from './reactive-forms/reactive-forms.component';
+import { FilterPipesComponent } from './filter-pipes/filter-pipes.component';
+import { ShortenPipe } from './Pipes/shorten.pipe';
+import { FilterPipe } from './Pipes/filter.pipe';
+import { PostsComponent } from './posts/posts.component';
 
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,9 +33,20 @@ import { TemplateFormComponent } from './template-form/template-form.component';
     EditUserComponent,
     PageNotFoundComponent,
     TemplateFormComponent,
+    ReactiveFormsComponent,
+    FilterPipesComponent,
+    ShortenPipe,
+    FilterPipe,
+    PostsComponent,
   ],
 
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+  ],
 
   providers: [
     AuthService,

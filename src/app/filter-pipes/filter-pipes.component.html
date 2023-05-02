@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <input
+        type="text"
+        class="form-control mt-3"
+        [(ngModel)]="filteredString"
+        placeholder="Search"
+      />
+    </div>
+
+    <div class="col-md-12">
+      <button class="btn btn-primary mt-3" (click)="onAddUser()">
+        Add User
+      </button>
+    </div>
+  </div>
+
+  <!-- Async Pipe -->
+  <div class="my-2">
+    {{ appStatus | async }}
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div
+        *ngFor="let user of users | CustomFilter : filteredString"
+        class="my-3"
+      >
+        <div>Name (uppercase): {{ user.name | uppercase }}</div>
+
+        <div>
+          Name (Custom pipe) : {{ user.name | uppercase | shorten : 5 }}
+        </div>
+
+        <div>Joined Date : {{ user.joined }}</div>
+
+        <div>Joined Date (date): {{ user.joined | date }}</div>
+
+        <div>
+          Joined Date (full date): {{ user.joined | date : "fullDate" }}
+        </div>
+
+        <div>
+          Joined Date (full date in Upper case):
+          {{ user.joined | date : "fullDate" | uppercase }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

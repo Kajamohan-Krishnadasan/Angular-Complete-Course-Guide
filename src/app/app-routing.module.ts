@@ -2,8 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CategoriesComponent } from './categories/categories.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { FilterPipesComponent } from './filter-pipes/filter-pipes.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PostsComponent } from './posts/posts.component';
+import { ReactiveFormsComponent } from './reactive-forms/reactive-forms.component';
 import { AuthGuardService } from './services/guards/auth-guard.service';
 import { DeactivateGuardService } from './services/guards/deactivate-guard.service';
 import { UserResolveService } from './services/resolvers/user-resolve.services';
@@ -45,6 +48,18 @@ const allRoutesOfApp: Routes = [
   {
     path: 'templateform',
     component: TemplateFormComponent,
+  },
+  {
+    path: 'reactiveform',
+    component: ReactiveFormsComponent,
+  },
+  {
+    path: 'filterpipes',
+    component: FilterPipesComponent,
+  },
+  {
+    path: 'posts',
+    component: PostsComponent,
   },
   {
     path: 'not-found',

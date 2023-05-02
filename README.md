@@ -2063,7 +2063,9 @@ other code is same as the above code.
 
 ## Form Handling
 
-### Template Driven Form
+## Template Driven Form
+
+here we mostly focus on the **template** part of the form and form handling is done in the html file.
 
 - in `app.module.ts` file
   - import the **FormsModule** from the **@angular/forms** package
@@ -2199,4 +2201,255 @@ disabled the submit button if the form is invalid using the **disabled** attribu
 
 set default value for gender here we using the **[ngModel] = "DefaultGender"** and we need to define **DefaultGender** value in the typescript file. if we change the value in the select element it will not change the value in the **DefaultGender** variable in the typescript file. Because we are using the **one way data binding**.
 
+- in `template-form.component.html` file
+
+  ```\
+    <label for="gender">Gender</label>
+    <select id="gender" name="gender" [ngModel]="DefaultGender" >
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+  ```
+
 set default value for about here we using the **[(ngModel)] = "about"** and we need to define **about** value in the typescript file. if we change the value in the textarea element it will change the value in the **about** variable in the typescript file. because we are using the **two way data binding**.
+
+- in `template-form.component.html` file
+
+  ```\
+    <label for="about">About</label>
+    <textarea id="about" name="about" [(ngModel)]="about"></textarea>
+  ```
+
+### Group the form data
+
+group the form data using the **ngModelGroup** attribute.
+
+- in `template-form.component.html` file
+  we wrappig with **div** tag and we use attribute **ngModelGroup="userNameAndEmailData"** to group the form data.
+
+  ```\
+    <div ngModelGroup="userNameAndEmailData">
+      <label for="userame">User Name</label>
+      <input type="text" id="userame" name="username" ngModel/>
+
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" ngModel />
+    </div>
+  ```
+
+fill the form data using the **setValue()** method.
+if we use the **setValue()** method we need to provide all the form data. otherwise it will throw an error.
+
+- in `template-form.component.html` file
+
+  ```\
+    <button(click)="fillValues()">
+      Fill Values (setValue() method)
+    </button>
+
+    <div ngModelGroup="userNameAndEmailData" #userDataRef="ngModelGroup" >
+
+        // input elements
+
+    </div>
+
+  ```
+
+here we are using the **#userDataRef** to access the **ngModelGroup** directive. therefore if we want to access the **ngModelGroup** directive we need to use **#userDataRef**.
+
+- in `template-form.component.ts` file
+
+  ```\
+  fillValues() {
+    this.signUpForm.form.setValue({
+      userNameAndEmailData: {
+        username: 'Kajamohan',
+        email: 'Kaja@gmail.com',
+      },
+      gender: 'male',
+      about: "i'm a software developer",
+    });
+    }
+  ```
+
+if we want to fill the form data partially we need to use the **patchValue()** method.
+
+- in `template-form.component.html` file
+
+  ```\
+    <button (click)="fillSomeValues()">
+      Fill Values (patchValue() method)
+    </button>
+
+    <div ngModelGroup="userNameAndEmailData" #userDataRef="ngModelGroup" >
+
+        // input elements
+
+    </div>
+
+  ```
+
+- in `template-form.component.ts` file
+
+  ```\
+  fillValues() {
+    this.signUpForm.form.patchValue({
+      userNameAndEmailData: {
+        username: 'Kajamohan',
+        email: 'Kaja@gmail.com',
+      }
+    });
+    }
+  ```
+
+### get the form data and reset the form
+
+- in `template-form.component.html` file
+
+  ```\
+     <form (ngSubmit)="formSubmit()" #formReference="ngForm">
+      // form elements
+    </form>
+  ```
+
+  here we are using the **#formReference** to access the **ngForm** directive.
+
+- in `template-form.component.ts` file
+
+  ```\
+    @ViewChild('formReference') signUpForm!: NgForm;
+    submitted = false;
+    user = {
+      username: '',
+      email: '',
+      gender: '',
+      about: '',
+    };
+
+    formSubmit() {
+      this.submitted = true;
+      this.user.username = this.signUpForm.value.userNameAndEmailData.username;
+      this.user.email = this.signUpForm.value.userNameAndEmailData.email;
+      this.user.gender = this.signUpForm.value.gender;
+      this.user.about = this.signUpForm.value.about;
+
+      // reset the form
+      this.signUpForm.reset();
+    }
+
+  ```
+
+  here we are using the **#signUpForm** to access the **ngForm** directive.
+  Using the **@ViewChild()** decorator we are accessing the **ngForm** directive and we are using the **value** property to get the form data.
+
+  reset the form using the **reset()** method.
+
+## Reactive Form
+
+here form handling is done using the typescript file
+
+- we need to import the **ReactiveFormsModule** in the **app.module.ts** file.
+
+- in `reactive-form.component.html` file
+
+```\
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <label>User Name</label>
+    <input type="text" formControlName="username" />
+
+    <label>Email</label>
+    <input type="text" formControlName="email" />
+
+    <div *ngFor="let gender of genders">
+      <label>
+        <input
+          type="radio"
+          name="gender"
+          [value]="gender"
+          formControlName="gender" />\
+
+          {{ gender }}
+      </label>
+    </div>
+
+    <button class="btn btn-primary">Add</button>
+  </form>
+```
+
+here we are using the **[formGroup]="signupForm"** to access the **FormGroup** directive in the typescript file.
+
+we are using the **FormControl()** method to create a form control.
+using **formControlName** attribute we are binding the form control to the input element.
+
+- in `reactive-form.component.html` file
+
+```\
+  <input type="text" formControlName="username" />
+
+  <input type="text" formControlName="email" />
+
+
+```
+
+- in `reactive-form.component.ts` file
+
+```\
+  genders = ['male', 'female'];
+
+  // create a form group
+  signupForm!: FormGroup;
+
+  ngOnInit() {
+    // create a form group
+    this.signupForm = new FormGroup({
+      'username': new FormControl(null),
+      'email': new FormControl(null),
+      'gender': new FormControl('female'),
+    });
+  }
+```
+
+onSubmit method
+
+```\
+  onSubmit() {
+    console.log(this.signupForm);
+  }
+```
+
+for form validation we need to import the **Validators** from the **@angular/forms** and we need to add this in the **ngOnInit** method
+
+```\
+  this.signupForm = new FormGroup({
+    username: new FormControl(null, Validators.required),
+    email: new FormControl(null, [Validators.required, Validators.email]),
+    gender: new FormControl('female'),
+  });
+```
+
+here we are using the **Validators.required** to validate the form control and we are using the **Validators.email** to validate the email.
+
+for displaying the validation error we need to use the **ngIf** directive.
+
+```\
+  <div *ngIf="signupForm.get('username')?.invalid && signupForm.get('username')?.touched">
+    <p>Username is required</p>
+  </div>
+
+  <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+    <p>Email is required</p>
+  </div>
+```
+
+here we are using the **signupForm.get('username')?.invalid** to check the form control is invalid and we are using the **signupForm.get('username')?.touched** to check the form control is touched.
+
+## pipes
+
+this is used to transform the data.
+Inbuild pipes are **uppercase**, **lowercase**, **date**, **currency**, **json**, **async**.
+
+async pipe use in the webserver.  
+
+## HTTP
+
+- we need to import the **HttpClientModule** in the **app.module.ts** file.
