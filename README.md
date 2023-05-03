@@ -2448,8 +2448,96 @@ here we are using the **signupForm.get('username')?.invalid** to check the form 
 this is used to transform the data.
 Inbuild pipes are **uppercase**, **lowercase**, **date**, **currency**, **json**, **async**.
 
-async pipe use in the webserver.  
+async pipe use in the webserver.
 
 ## HTTP
 
 - we need to import the **HttpClientModule** in the **app.module.ts** file.
+
+```ts
+  .get(
+    'https://angular-complete-guide-f1e24-default-rtdb.firebaseio.com/posts.json',
+    {
+      headers: new HttpHeaders({
+      'Custom-Header': 'Kajamohan get',
+      }),
+      params: new HttpParams().set('custom', 'haiFriend'),
+
+    }
+  )
+
+// THIS IS SAME AS
+
+  .get(
+  'https://angular-complete-guide-f1e24-default-rtdb.firebaseio.com/posts.json?custom=haiFriend'
+  )
+
+
+  // Sent more than one params
+
+  let searchParams = new HttpParams();
+  searchParams = searchParams.append('custom', 'hai');
+  searchParams = searchParams.append('name', 'kajamohan');
+
+
+  .get(
+        'https://angular-complete-guide-f1e24-default-rtdb.firebaseio.com/posts.json',
+        {
+          headers: new HttpHeaders({
+            'Custom-Header': 'Kajamohan get',
+          }),
+          params: searchParams,
+        }
+      )
+// THIS IS SAME AS
+
+  .get(
+  'https://angular-complete-guide-f1e24-default-rtdb.firebaseio.com/posts.json?custom=hai&name=kajamohan'
+  )
+
+```
+
+- **GET THE SERVER RESPONSE ALL DETAILS** : we need to use `observe` in the **get()** of **post()** method.
+
+```ts
+  .get(
+    'https://angular-complete-guide-f1e24-default-rtdb.firebaseio.com/posts.json',
+    {
+      headers: new HttpHeaders({
+        'Custom-Header': 'Kajamohan get',
+      }),
+      params: searchParams,
+      observe: 'response',
+    }
+  )
+```
+
+## Interceptors
+
+- this will use to modify the request before it leaves the application.
+- we need to create a new file called **auth.interceptor.ts** in the **auth** folder.
+
+- in `auth.interceptor.ts` file
+
+```ts
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEventType } from "@angular/common/http";
+import { tap } from "rxjs/operators";
+
+export class AuthInterceptorService implements HttpInterceptor {
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    console.log("Request is on its way");
+    const modifiedRequest = req.clone({
+      headers: req.headers.append("Auth", "xyz"),
+    });
+    return next.handle(modifiedRequest).pipe(
+      tap((event) => {
+        console.log(event);
+        if (event.type === HttpEventType.Response) {
+          console.log("Response arrived, body data: ");
+          console.log(event.body);
+        }
+      })
+    );
+  }
+}
+```

@@ -1,5 +1,6 @@
-<div class="container">
-  <div class="row mb-5 mt-2">
+<app-loading *ngIf="isLoading"></app-loading>
+<div *ngIf="!isLoading" class="container">
+  <!-- <div class="row mb-5 mt-2">
     <div class="col-md-12">
       <button
         class="btn btn-primary mx-3"
@@ -16,11 +17,22 @@
         Logout
       </button>
     </div>
-  </div>
+  </div> -->
 
-  <div class="row">
+  <div class="row mt-3">
     <div class="col-md-3">
       <ul class="nav flex-column nav-pills">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/auth"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Authenticate
+          </a>
+        </li>
+
         <li class="nav-item">
           <a
             class="nav-link"

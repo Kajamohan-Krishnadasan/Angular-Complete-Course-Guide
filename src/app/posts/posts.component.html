@@ -1,4 +1,5 @@
 <div class="container">
+  <div *ngIf="error" class="alert alert-danger mt-2">{{ error }}</div>
   <div class="col-md-12">
     <form [formGroup]="postForm" (ngSubmit)="onPostSubmit()">
       <div class="form-group">
@@ -6,7 +7,7 @@
         <input type="text" class="form-control" formControlName="title" />
 
         <div
-          class="help-text"
+          class="help-text text-danger"
           *ngIf="!postForm.get('title').valid && postForm.get('title').touched"
         >
           Title is required
@@ -18,7 +19,7 @@
         <textarea class="form-control" formControlName="content"></textarea>
 
         <div
-          class="help-text"
+          class="help-text text-danger"
           *ngIf="
             !postForm.get('content').valid && postForm.get('content').touched
           "
@@ -37,5 +38,44 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<div class="container m-4">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex justify-content-between">
+        <h4>Posts</h4>
+
+        <button
+          [disabled]="!(posts.length > 0)"
+          class="btn btn-warning"
+          (click)="onClearPosts()"
+        >
+          Clear Posts
+        </button>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div
+              *ngFor="let post of posts"
+              class="border-3 border-warning border-bottom mb-3"
+            >
+              <div class="d-flex justify-content-between">
+                <h1 class="text-success">{{ post.title }}</h1>
+
+                <button class="btn" (click)="onDeletePost(post.id)">
+                  <i class="bi bi-trash-fill text-danger"> </i>
+                </button>
+              </div>
+
+              <p class="text-secondary">{{ post.content }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

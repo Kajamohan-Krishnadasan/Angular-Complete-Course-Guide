@@ -22,7 +22,11 @@ import { ShortenPipe } from './Pipes/shorten.pipe';
 import { FilterPipe } from './Pipes/filter.pipe';
 import { PostsComponent } from './posts/posts.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoadingComponent } from './loading/loading.component';
+import { AuthInterceptorService } from './services/auth.interceptor.service';
+import { LoggingInterceptorService } from './services/logging.interceptor.service';
+import { AuthComponent } from './auth/auth.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +42,8 @@ import { HttpClientModule } from '@angular/common/http';
     ShortenPipe,
     FilterPipe,
     PostsComponent,
+    LoadingComponent,
+    AuthComponent,
   ],
 
   imports: [
@@ -49,6 +55,16 @@ import { HttpClientModule } from '@angular/common/http';
   ],
 
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoggingInterceptorService,
+      multi: true,
+    },
     AuthService,
     AuthGuardService,
     DeactivateGuardService,
